@@ -4,6 +4,9 @@
 #include "busca.h"
 #include "order.h"
 
+void usage() {
+
+}
 
 void run(uint16_t tamanho, uint8_t chave) {
     uint8_t *vetor = random_generator(tamanho);
@@ -22,15 +25,20 @@ void run(uint16_t tamanho, uint8_t chave) {
     double cpu_time_used_itr = ((double) (itr_end - itr_start));
     double cpu_time_used_rec = ((double) (rec_end - rec_start));
 
-    printf("------------------------\n");
-    printf("buscaBinaria ; %d ; %d => %d ; => %.2fμs\n", tamanho, chave, idx_itr, cpu_time_used_itr);
-    printf("bBinRec ; %d ; %d => %d ; => %.2fμs\n", tamanho, chave, idx_rec, cpu_time_used_rec);
+    printf("--------|%6d|--------\n", tamanho);
+    printf("buscaBinaria ; chave: %d => %d ; => %.2lfμs\n", chave, idx_itr, cpu_time_used_itr);
+    printf("bBinRec ; chave: %d => %d ; => %.2lfμs\n", chave, idx_rec, cpu_time_used_rec);
 
     free(vetor);
 }
 
-int main() {
-    uint8_t x = rand();
+int main(int argc, char *argv[]) {
+    if (argc > 2) {
+        return 1;
+    }
+
+    uint8_t x = (argc == 2 && atoi(argv[1]) != 0 ? atoi(argv[1]): rand() % 100 + 1);
+
     run(100, x);
     run(1000, x);
     run(10000, x);
