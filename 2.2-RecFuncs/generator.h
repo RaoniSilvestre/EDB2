@@ -8,7 +8,7 @@
  * @brief Gera um vetor de números aleatórios.
  *
  * Esta função aloca dinamicamente um vetor de uint8_t com o tamanho especificado
- * e preenche cada posição com um valor aleatório entre 0 e 100.
+ * e preenche cada posição com um valor aleatório entre 1 e 100.
  *
  * @param tamanho O tamanho do vetor a ser gerado.
  * @return Um ponteiro para o vetor gerado. O usuário é responsável por liberar a memória alocada.

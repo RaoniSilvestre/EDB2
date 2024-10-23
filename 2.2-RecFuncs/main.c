@@ -5,7 +5,7 @@
 #include "order.h"
 
 void usage() {
-
+    printf("Teste de tempo computacional de duas implementações de uma busca binária em arrays de tamanho 100, 1000 e 10000.\nO primeiro argumento do programa é a chave de busca desejada.\nCaso fora do intervalo válido ([1, 100]), um valor aleatório dentro do intervalo será utilizado.");
 }
 
 void run(uint16_t tamanho, uint8_t chave) {
@@ -34,6 +34,7 @@ void run(uint16_t tamanho, uint8_t chave) {
 
 int main(int argc, char *argv[]) {
     if (argc > 2) {
+        usage();
         return 1;
     }
 
