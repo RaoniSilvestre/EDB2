@@ -1,0 +1,9 @@
+Execução com idadeRep:
+O programa foi executado com 100 dados. Duração do programa: 0.000000 segundos
+O programa foi executado com 1000 dados. Duração do programa: 0.001000 segundos
+O programa foi executado com 1000000 dados. Duração do programa: 0.251000 segundos
+
+Execução com idadeRep2:
+O programa foi executado com 100 dados. Duração do programa: 0.000000 segundos
+O programa foi executado com 1000 dados. Duração do programa: 0.001000 segundos
+O programa foi executado com 1000000 dados. Duração do programa: 0.924000 segundos
