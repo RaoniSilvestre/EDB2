@@ -18,7 +18,7 @@ where
     sort_function(&mut array);
     let elapsed = now.elapsed();
 
-    println!("{} Timing: {:.2?} ", function_name, elapsed,);
+    println!("{}:\n  - TIMING = {:.2?}\n", function_name, elapsed);
 
     let dir_path = "./data/output/";
     let mut file_name = function_name.clone();
@@ -33,25 +33,17 @@ where
 }
 
 pub fn run_array(array: Vec<i32>) {
-    let array_of_recursive: Vec<(&str, SortFunction<i32>)> = vec![
-        ("QuickSort_recursivo", recursive_quick_sort),
-        ("MergeSort_recursivo", recursive_merge_sort),
-        ("BubbleSort_recursivo", recursive_bubble_sort),
+    let array_of_sorts: Vec<(&str, SortFunction<i32>)> = vec![
+        ("RECURSIVE_QUICKSORT", recursive_quick_sort),
+        ("RECURSIVE_MERGESORT", recursive_merge_sort),
+        ("RECURSIVE_BUBBLESORT", recursive_bubble_sort),
+        ("ITERATIVE_BUBBLESORT", iterative_bubble_sort),
     ];
-    let array_of_iterative: Vec<(&str, SortFunction<i32>)> =
-        vec![("BubbleSort_iterativo", iterative_bubble_sort)];
 
-    println!("---------------------------");
-    println!("---------------------------");
-    println!("Array Length: {}", array.len());
-    println!("=========RECURSIVOS========");
-    for (name, func) in array_of_recursive {
-        run::<i32, _>(array.clone(), func, String::from(name));
-    }
+    println!("---------------------------\n");
+    println!("Array Length: {}\n", array.len());
 
-    println!("=========ITERATIVOS========");
-
-    for (name, func) in array_of_iterative {
+    for (name, func) in array_of_sorts {
         run::<i32, _>(array.clone(), func, String::from(name));
     }
 }
