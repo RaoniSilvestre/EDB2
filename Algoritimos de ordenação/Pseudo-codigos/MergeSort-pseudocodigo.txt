@@ -1,0 +1,48 @@
+function mergeSort(array, esquerda, direita ) {
+    se esquerda >= direita {
+    	retornar
+    }
+
+    
+    meio = esquerda + (direita - esquerda) / 2
+
+    mergeSort(array, esquerda, meio)
+    mergeSort(array, meio+1, direita)
+    
+    merge(array, esquerda, meio, direita)
+}
+
+
+function merge(array, esquerda, meio, direita) {
+
+    arrayEsquerdo = elementos de array[esquerda] até array[meio]
+    arrayDireito = elementos de array[meio+1] até array[direita]
+
+
+    posiçãoAtual = esquerda
+
+    Enquanto esquerda não estiver vazia e direita não estiver vazia {
+        se arrayEsquerdo[0] ≤ arrayDireito[0] {
+            sobrescrever arrayEsquerdo[0] em array[posiçãoAtual]
+            remover arrayEsquerdo[0] de arrayEsquerdo
+        }senão{
+            sobrescrever arrayDireito[0] em array[posiçãoAtual]
+            remover arrayDireito[0] de arrayDireito
+        }
+	posiçãoAtual += 1
+    }
+    
+
+    Enquanto arrayEsquerdo não estiver vazio {
+        adicionar arrayEsquerdo[0] a array[posiçãoAtual]
+	remover arrayEsquerdo[0] de arrayEsquerdo
+	posiçãoAtual += 1
+    }
+    
+    Enquanto arrayDireito não estiver vazio {
+        adicionar arrayDireito[0] a array[posiçãoAtual]
+	remover arrayDireito[0] de arrayDireito
+	posiçãoAtual += 1
+    }
+
+}

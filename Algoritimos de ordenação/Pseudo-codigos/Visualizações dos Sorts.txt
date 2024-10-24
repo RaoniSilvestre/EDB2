@@ -1,0 +1,3 @@
+Merge Sort - https://www.youtube.com/watch?v=ZRPoEKHXTJg&ab_channel=TimoBingmann
+Bubble Sort - https://www.youtube.com/watch?v=Cq7SMsQBEUw&ab_channel=TimoBingmann
+Quick Sort - https://www.youtube.com/watch?v=8hEyhs3OV1w&ab_channel=TimoBingmann

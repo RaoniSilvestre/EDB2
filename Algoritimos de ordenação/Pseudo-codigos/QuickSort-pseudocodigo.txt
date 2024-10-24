@@ -1,0 +1,28 @@
+function quickSort(array, esquerda, direita) {
+    se esquerda >= direita {
+	retornar
+    }
+
+    pivoIndex = particionar(array, esquerda, direita)
+
+        
+    quickSort(array, esquerda, pivoIndex - 1)
+    quickSort(array, pivoIndex + 1, direita)
+}
+
+
+function particionar(array, esquerda, direita) {
+
+    pivo = array[direita]
+    i = esquerda - 1
+
+    para j de esquerda até direita - 1 {
+        se array[j] ≤ pivo {
+            i += 1
+            trocar array[i] com array[j]
+        }
+    }
+
+    trocar array[i + 1] com array[direita]
+    retornar i + 1
+}
