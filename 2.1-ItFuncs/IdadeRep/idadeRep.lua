@@ -1,3 +1,5 @@
+
+
 local function idadeRep(idade)
 	local tamanho = #idade
 	local menor = 200
@@ -8,7 +10,7 @@ local function idadeRep(idade)
 		end
 	end
 
-	for i = 1,tamanho do
+	for i = 1,tamanho do      -- Em lua os For's acabam quando o indice fica maior que o limite (neste caso quando i for maior que tamanho)
 		if idade[i] == menor then
 			return true
 		end
@@ -21,7 +23,7 @@ end
 
 local function idadeRep2(idade)
 	table.sort(idade)
-	return (idade[1]==idade[2])
+	return (idade[1]==idade[2]) -- Em lua as listas começam do 1 no lugar do 0
 end
 
 
@@ -35,7 +37,7 @@ local function criarListaEFuncao(quantidade, opcao)
 	for i = 1, quantidade do
 		table.insert(listaDeIdade,(math.random(0,100)))
 	end
-	
+
 
 	if opcao then
 		idadeRep(listaDeIdade)

@@ -1,9 +1,12 @@
 Execução com idadeRep:
-O programa foi executado com 100 dados. Duração do programa: 0.000000 segundos
-O programa foi executado com 1000 dados. Duração do programa: 0.001000 segundos
-O programa foi executado com 1000000 dados. Duração do programa: 0.251000 segundos
+O programa foi executado com 100 dados. Duração do programa: 0.000013 segundos
+O programa foi executado com 1000 dados. Duração do programa: 0.000091 segundos
+O programa foi executado com 1000000 dados. Duração do programa: 0.139852 segundos
 
 Execução com idadeRep2:
-O programa foi executado com 100 dados. Duração do programa: 0.000000 segundos
-O programa foi executado com 1000 dados. Duração do programa: 0.001000 segundos
-O programa foi executado com 1000000 dados. Duração do programa: 0.924000 segundos
+O programa foi executado com 100 dados. Duração do programa: 0.000024 segundos
+O programa foi executado com 1000 dados. Duração do programa: 0.000227 segundos
+O programa foi executado com 1000000 dados. Duração do programa: 0.401013 segundos
+
+
+Caso executado pelo VsCode, há chance dos valores não aparecerem corretamente, para mais precisão e segurança é recomendado executar pelo terminal.

@@ -1,1 +1,0 @@
-O programa está na linguagem Lua
