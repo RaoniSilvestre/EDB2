@@ -12,11 +12,9 @@ fn main() {
     for (i, &size) in file_sizes.iter().enumerate() {
         let numbers = generate_list(size);
 
-        // Cria o arquivo correspondente
         let file_path = Path::new(dir_path).join(file_names[i]);
         let mut file = File::create(file_path).expect("Erro ao criar o arquivo");
 
-        // Escreve os números no arquivo
         for number in numbers {
             writeln!(file, "{}", number).expect("Erro ao escrever no arquivo");
         }
