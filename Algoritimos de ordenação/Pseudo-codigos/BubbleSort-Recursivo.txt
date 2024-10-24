@@ -1,0 +1,16 @@
+function bubbleSort(array,tamanho) {
+    se tamanho <= 1 {
+	retornar
+    }
+
+    para i de 0 até tamanho-1 {
+
+	se array[j] > array[j+1] {
+
+                trocar array[j] com array[j+1]
+        }
+
+    }
+
+    bubbleSort( array, tamanho-1)
+}
