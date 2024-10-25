@@ -28,9 +28,7 @@ end
 
 
 
-local function criarListaEFuncao(quantidade, opcao)
-	
-	local tempoInicial = os.clock()
+local function criarListaEFuncao(quantidade)
 
 	local listaDeIdade = {}
 
@@ -38,27 +36,27 @@ local function criarListaEFuncao(quantidade, opcao)
 		table.insert(listaDeIdade,(math.random(0,100)))
 	end
 
+	print("O programa foi executado com "..quantidade.." dados.")
+	for i=0,1 do
+		local tempoInicial = os.clock()
+		local qual = ""
+		if i==0 then
+			idadeRep(listaDeIdade)
+			qual = "idadeRep"
+		else
+			idadeRep2(listaDeIdade)
+			qual = "idadeRep2"
+		end
+		local tempoFinal = os.clock()
+		local duracao = (tempoFinal - tempoInicial) * 1000
 
-	if opcao then
-		idadeRep(listaDeIdade)
-	else
-		idadeRep2(listaDeIdade)
+		 print(string.format("Duração do programa "..qual..": %.6f Ms", duracao))
 	end
-
-	
-	local tempoFinal = os.clock()
-	local duracao = tempoFinal - tempoInicial
-
-	print(string.format("O programa foi executado com "..quantidade.." dados. Duração do programa: %.6f segundos", duracao))
-
+	print("")
 end
 
 
-print("\nExecução com idadeRep:")
-criarListaEFuncao(100, true)
-criarListaEFuncao(1000, true)
-criarListaEFuncao(1000000, true)
-print("\nExecução com idadeRep2:")
-criarListaEFuncao(100, false)
-criarListaEFuncao(1000, false)
-criarListaEFuncao(1000000, false)
+print("\nExecução:")
+criarListaEFuncao(100)
+criarListaEFuncao(1000)
+criarListaEFuncao(1000000)

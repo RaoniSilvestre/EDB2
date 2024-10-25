@@ -4,7 +4,7 @@ mod tests {
         generate_list,
         sorting::{
             bubble::iterative::iterative_bubble_sort, merge::recursive::recursive_merge_sort,
-            quick::recursive::recursive_quick_sort,
+            merge::iterative::iterative_merge_sort, quick::recursive::recursive_quick_sort,
         },
     };
 
@@ -15,7 +15,7 @@ mod tests {
     }
 
     #[test]
-    fn bubble_sort_test_10x1000() {
+    fn iterative_bubble_sort_test_10x1000() {
         for _ in 0..10 {
             let mut random_list = generate_list(1000);
             let mut random_list_2 = random_list.clone();
@@ -26,7 +26,7 @@ mod tests {
     }
 
     #[test]
-    fn quick_sort_test10x1000() {
+    fn recursive_quick_sort_test10x1000() {
         for _ in 0..10 {
             let mut random_list = generate_list(1000);
             let mut random_list_2 = random_list.clone();
@@ -37,7 +37,7 @@ mod tests {
     }
 
     #[test]
-    fn merge_sort_test10x1000() {
+    fn recursive_merge_sort_test10x1000() {
         for _ in 0..10 {
             let mut random_list = generate_list(1000);
             let mut random_list_2 = random_list.clone();
@@ -46,4 +46,16 @@ mod tests {
             assert_eq!(random_list, random_list_2);
         }
     }
+
+    #[test]
+    fn iterative_merge_sort_test10x1000() {
+        for _ in 0..10 {
+            let mut random_list = generate_list(1000);
+            let mut random_list_2 = random_list.clone();
+            iterative_merge_sort(&mut random_list);
+            random_list_2.sort();
+            assert_eq!(random_list, random_list_2);
+        }
+    }
 }
+

@@ -2,7 +2,7 @@ use std::{fmt::Display, fs::File, io::Write, path::Path, time::Instant};
 
 use crate::sorting::{
     bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
-    merge::recursive::recursive_merge_sort,
+    merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
     quick::recursive::recursive_quick_sort,
     OrderedCopy,
 };
@@ -36,6 +36,7 @@ pub fn run_array(array: Vec<i32>) {
     let array_of_sorts: Vec<(&str, SortFunction<i32>)> = vec![
         ("RECURSIVE_QUICKSORT", recursive_quick_sort),
         ("RECURSIVE_MERGESORT", recursive_merge_sort),
+        ("ITERATIVE_MERGESORT", iterative_merge_sort),
         ("RECURSIVE_BUBBLESORT", recursive_bubble_sort),
         ("ITERATIVE_BUBBLESORT", iterative_bubble_sort),
     ];
