@@ -1,0 +1,9 @@
+--------|   100|--------
+buscaBinaria ; chave: 84 => -1 ; => 6.00μs
+bBinRec ; chave: 84 => -1 ; => 4.00μs
+--------|  1000|--------
+buscaBinaria ; chave: 84 => 816 ; => 7.00μs
+bBinRec ; chave: 84 => 826 ; => 4.00μs
+--------| 10000|--------
+buscaBinaria ; chave: 84 => 8262 ; => 9.00μs
+bBinRec ; chave: 84 => 8280 ; => 4.00μs
