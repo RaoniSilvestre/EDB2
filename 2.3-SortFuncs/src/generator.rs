@@ -6,8 +6,8 @@ use std::path::Path;
 fn main() {
     let dir_path = "./data/input/";
 
-    let file_sizes = vec![1000, 10_000, 100_000];
-    let file_names = vec!["file_1000.txt", "file_10000.txt", "file_100000.txt"];
+    let file_sizes = [1000, 10_000, 100_000];
+    let file_names = ["file_1000.txt", "file_10000.txt", "file_100000.txt"];
 
     for (i, &size) in file_sizes.iter().enumerate() {
         let numbers = generate_list(size);
