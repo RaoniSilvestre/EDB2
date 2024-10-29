@@ -2,8 +2,8 @@ A conclusão que tiramos da comparação entre as duas funções e seus tempos d
 
 A função idadeRep percorre a lista duas vezes:
 
-	O primeiro for percorre a lista para encontrar o menor valor, com complexidade de O(n), onde n é o tamanho da lista.
-	O segundo for verifica se o menor valor se repete, também com complexidade O(n), podendo ser interrompido antecipadamente ao encontrar o menor valor.
+	O primeiro for percorre a lista para encontrar o menor valor (caso o menor valor seja menor que 200), com complexidade de O(n), onde n é o tamanho da lista.
+	O segundo for verifica se o menor valor está presente na lista, também com complexidade O(n), com a verificação podendo ser interrompida antecipadamente caso encontrá-lo.
 	Portanto, a complexidade de idadeRep é O(2n), o que é linear.
 
 
@@ -13,8 +13,23 @@ Por outro lado, a função idadeRep2 ordena a lista e faz uma comparação:
 	Em seguida, há uma comparação entre os dois primeiros elementos, uma operação de custo constante.
 	Assim, a complexidade de idadeRep2 é O(n log n).
 
+Na primeira execução com 100 dados, as durações foram as seguintes:
+Duração do programa idadeRep: 0.017000 Ms
+Duração do programa idadeRep2: 0.071000 Ms
 
-	À medida que a lista cresce, a diferença começa a aparecer. A idadeRep2 começa a ser notavelmente mais lenta porque a ordenação envolve mais operações do que o simples percurso linear de idadeRep.
-	Com 1.000.000 de elementos, a diferença é ainda mais evidente. A função idadeRep (linear) tem um tempo de execução muito menor que idadeRep2, que é quasilinear. Isso reflete a diferença assintótica entre O(n) e O(n log n). A ordenação vai se tornando muito mais custosa à medida que o tamanho da entrada aumenta.
+Nessa primeira instância, a função idadeRep2 já apresentou um tempo de execução maior em relação a idadeRep, apesar da diferença minuscula de apenas 0,054 milisegundos.
+Algo interessante de se apontar, é que a função de ordenação em lua, é feita com base em C, que é uma linguagem objetivamente mais rápida. Porém, devido a complexidade da função de ordenação ser maior, Idaderep ainda é mais rápida que Idaderep2.
 
-	Portanto, idadeRep é mais eficiente assintoticamente, como evidenciado pelos tempos de execução menores à medida que a quantidade de dados aumenta.
+Já na segunda execução do programa, com 1000 dados, os resultados foram:
+Duração do programa idadeRep: 0.063000 Ms
+Duração do programa idadeRep2: 0.891000 Ms
+
+À medida que a lista cresce, a diferença fica mais evidente. A idadeRep2 começa a ser notavelmente mais lenta porque a ordenação envolve mais operações do que o simples percurso linear de idadeRep.
+
+Na terceira e última execução, com 1000000 dados, os resultados foram os seguintes:
+Duração do programa idadeRep: 48.320000 Ms
+Duração do programa idadeRep2: 1688.003000 Ms
+
+	Com 1.000.000 de elementos, a diferença é alarmante. A função idadeRep (linear) tem um tempo de execução muito menor que idadeRep2, que é O(n log n). Isso reflete a diferença assintótica entre O(n) e O(n log n). A ordenação vai se tornando muito mais custosa à medida que o tamanho da entrada aumenta.
+
+	Portanto, idadeRep é mais eficiente assintoticamente, como evidenciado pelos tempos de execução menores.
