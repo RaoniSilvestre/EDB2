@@ -695,7 +695,7 @@ A chamada a table.sort() ordena a lista com complexidade O(n log n).
 Em seguida, há uma comparação entre os dois primeiros elementos, uma operação de custo O(1).
 Assim, a complexidade de idadeRep2 é O(n log n).
 
-### 2.2.3 Tempos de execução
+### 2.2.3 Análise de Resultados
 
 A tabela a seguir mostra como as funções idadeRep e idadeRep2 se comportaram com entrada de cem, mil e um bilhão.
 
@@ -717,4 +717,23 @@ Com 1.000.000 de elementos, a diferença é alarmante. A função idadeRep (line
 <br>
 
 Portanto, idadeRep é mais eficiente assintoticamente, como evidenciado pelos tempos de execução menores.
+
+## 2.3 FUNÇÕES RECURSIVAS - BUSCABINARIA E BBINREC
+
+### 2.3.1 BuscaBinaria
+
+A função buscaBinaria implementa o algoritmo de busca binária, em sua versão iterativa, para encontrar a posição de um elemento (chave) em um vetor ordenado. Inicialmente, os índices da esquerda (esq) e direita (dir) são definidos como os extremos do vetor. Em cada iteração do loop while, o índice do meio (m) é calculado. Se o valor no índice m for menor que a chave, o índice esquerdo é movido para m + 1; caso contrário, o índice direito é ajustado para m. Esse processo continua até que esq e dir se encontrem. Quando o loop termina, a função verifica se o elemento encontrado é a chave buscada; se for, retorna o índice esq, caso contrário, retorna -1. 
+
+Essa implementação percorre a lista em tempo O(log n), onde n é o tamanho do vetor, já que a cada iteração o intervalo de busca é reduzido pela metade. Essa implementação é eficiente para vetores grandes.
+
+### 2.3.2 bBinRec
+
+A função bBinRec implementa a busca binária de forma recursiva para encontrar a posição de uma chave em um vetor. A função começa verificando se o intervalo de busca está esgotado: se esq for maior ou igual a dir e o elemento no índice esq não for igual à chave, a função retorna -1, indicando que a chave não foi encontrada. Em seguida, calcula o índice do meio (m) como o ponto médio entre esq e dir. Se o elemento no índice m for igual à chave, m é retornado como o índice onde a chave foi encontrada.
+
+Caso contrário, a função realiza uma chamada recursiva: se o valor em vetor[m] for maior que a chave, chama-se bBinRec para o subvetor da esquerda (esq até m - 1); se for menor, a chamada é feita para o subvetor da direita (m + 1 até dir). Esse processo de divisão continua até que a chave seja encontrada ou que o intervalo de busca se esgote.
+
+A complexidade da função bBinRec é O(log n), onde n é o número de elementos no vetor, pois a cada chamada recursiva o intervalo de busca é reduzido pela metade.
+
+### 2.3.3 Análise de Resultados
+
 
