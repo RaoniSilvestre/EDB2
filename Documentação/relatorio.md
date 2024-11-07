@@ -744,3 +744,7 @@ A tabela a seguir mostra os resultados de tempo de execução das funções busc
 | 1000 | 6μs | 4μs |
 | 10000 | 7μs | 4μs |
 
+É possível perceber nos resultados apresentados acima que a função bBinRec é consistentemente mais rápida que buscaBinaria para os três tamanhos de vetor testados (100, 1000 e 10000 elementos). Enquanto buscaBinaria apresenta um aumento gradual no tempo de execução conforme o tamanho do vetor cresce (de 5μs para 7μs), bBinRec mantém um tempo constante de 4μs para todos os tamanhos. Essa diferença pode ser atribuída à natureza iterativa de buscaBinaria, que, embora eficiente, envolve verificações adicionais a cada iteração. Em contrapartida, a recursão de bBinRec permite uma eliminação direta de metade do vetor em cada chamada sem repetir verificações, o que resulta em uma leve vantagem de desempenho. 
+
+Entretanto, a recursão pode consumir mais memória de pilha, o que, para vetores muito grandes, pode se tornar uma limitação. A partir desses resultados, pode-se concluir que bBinRec é mais eficiente em termos de tempo, especialmente para vetores de tamanho moderado, embora a eficiência de memória de buscaBinaria possa ser preferível em casos específicos onde o uso de pilha é uma preocupação.
+
