@@ -1,5 +1,26 @@
 use crate::sorting::OrderedCopy;
 
+/// Ordena um vetor em ordem crescente usando o algoritmo Merge Sort recursivo.
+///
+/// # Parâmetros
+/// - `array`: Uma referência mutável para um vetor de elementos do tipo `T` que implementam `OrderedCopy`.
+///
+/// # Comportamento
+/// - A função `recursive_merge_sort` realiza a ordenação dividindo recursivamente o vetor em metades.
+/// - O vetor é dividido até que cada sub-vetor contenha um único elemento (ou esteja vazio), e então as sub-listas são mescladas.
+/// - A função auxiliar `merge_sorting` realiza essa divisão recursiva e chama `merge` para combinar as sub-listas ordenadas.
+///
+/// # Exemplo de Uso
+/// ```
+/// let mut vetor = vec![5, 3, 8, 4, 2];
+/// recursive_merge_sort(&mut vetor);
+/// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]
+/// ```
+///
+/// # Complexidade de Tempo
+/// - Pior caso: O(n log n), onde `n` é o número de elementos no vetor.
+/// - Melhor caso: O(n log n), pois o Merge Sort sempre divide e mescla os elementos.
+///
 pub fn recursive_merge_sort(array: &mut Vec<impl OrderedCopy>) {
     *array = merge_sorting(array);
 }

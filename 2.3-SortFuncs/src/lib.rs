@@ -3,17 +3,6 @@ use std::{
     io::{BufRead, BufReader, Result},
 };
 
-use rand::Rng;
-
-pub fn generate_list(n: usize) -> Vec<i32> {
-    let mut list: Vec<i32> = Vec::new();
-    let mut rng = rand::thread_rng();
-    for _ in 0..n {
-        list.push(rng.gen_range(0..1000));
-    }
-    list
-}
-
 pub fn read_numbers_from_file(file_path: &str) -> Result<Vec<i32>> {
     let file = File::open(file_path)?;
     let reader = BufReader::new(file);
