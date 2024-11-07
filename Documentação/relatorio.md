@@ -129,7 +129,6 @@ $$
 
 Hipotese: $T(k) \leq ck², (∀k)[1 \leq k \leq n]$
 
-$$
 \begin{align*}
 T(n) \leq cn² &\implies T(n-1) + n \leq c(n-1)² + n \leq cn² \\
 &\implies c(n² -2n + 1) + n \leq cn² \\
@@ -137,17 +136,14 @@ T(n) \leq cn² &\implies T(n-1) + n \leq c(n-1)² + n \leq cn² \\
 &\implies -2nc + c + n \leq 0 \\
 &\implies c + n(1 - 2c) \leq 0
 \end{align*}
-$$
 
 Como `n` é sempre um valor positivo e tende ao infinito, para que $c + n(1 - 2c) < 0$ seja verdade, precisamos que $1-2c < 0$.
 
 
-$$
 \begin{align*}
 1-2c < 0 &\implies 1 < 2c \\
 &\implies c > 1/2 \\
 \end{align*}
-$$
 
 Logo, $T(n)$ é $O(n²)$.
 
@@ -161,7 +157,6 @@ Aplica-se *n* -1 sobre a fórmula de T(n). E assim por diante.
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= T(n-1) + (n-1),\\
 &= (T(n-2) + (n-2)) + (n-1)\\
@@ -169,7 +164,6 @@ T(n) &= T(n-1) + (n-1),\\
 &= ...\\
 T(n) &= T(n - k) +  \sum_{i=1}^{k} n - i
 \end{align*}
-$$
 
 <br>
 
@@ -177,11 +171,9 @@ Quando k = n -1, temos:
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= T(1) + (n−1)+(n−2)+…+1
 \end{align*}
-$$
 
 <br>
 
@@ -189,11 +181,9 @@ Que é igual a:
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= T(1) + \frac{n(n-1)}{2}
 \end{align*}
-$$
 
 <br>
 
@@ -203,11 +193,9 @@ Portanto, a complexidade total é:
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= O(n^2)
 \end{align*}
-$$
 
 <br>
 
@@ -288,6 +276,184 @@ $$
 Mesmo que o array esteja ordenado, o algoritmo ainda precisa percorrer todos os níveis de divisão e realizar operações de mesclagem, logo todos os casos (melhor, médio e pior) têm a mesma complexidade
 
 
+### 1.2.2 VERSÃO RECURSIVA
+
+Neste algoritmo de ordenação, a sequência de *n* elementos é dividida em duas subsênqueicias de *n*/2 elementos e não ordenadas recursivamente. Então as subsequência são intercaladas para produzir uma solução.
+
+```
+function mergeSort(array, esquerda, direita ) {
+    se esquerda >= direita {                          // Θ(1)
+    	retornar
+    }
+    
+    meio = esquerda + (direita - esquerda) / 2       // Θ(1)
+
+    mergeSort(array, esquerda, meio)
+    mergeSort(array, meio+1, direita)
+    
+    merge(array, esquerda, meio, direita)
+}
+```
+
+Antes de calcular o tempo de execução do mergeSort, devemos analisar a função merge.
+
+```
+function merge(array, esquerda, meio, direita) {
+
+    arrayEsquerdo = elementos de array[esquerda] até array[meio]
+    arrayDireito = elementos de array[meio+1] até array[direita]
+
+
+    posiçãoAtual = esquerda
+
+    Enquanto esquerda não estiver vazia e direita não estiver vazia { //O(n)
+        se arrayEsquerdo[0] ≤ arrayDireito[0] {
+            sobrescrever arrayEsquerdo[0] em array[posiçãoAtual]
+            remover arrayEsquerdo[0] de arrayEsquerdo
+        }senão{
+            sobrescrever arrayDireito[0] em array[posiçãoAtual]
+            remover arrayDireito[0] de arrayDireito
+        }
+	posiçãoAtual += 1
+    }
+    
+
+    Enquanto arrayEsquerdo não estiver vazio {
+      adicionar arrayEsquerdo[0] a array[posiçãoAtual]
+      remover arrayEsquerdo[0] de arrayEsquerdo
+      posiçãoAtual += 1
+    }
+    
+    Enquanto arrayDireito não estiver vazio {
+      adicionar arrayDireito[0] a array[posiçãoAtual]
+      remover arrayDireito[0] de arrayDireito
+      posiçãoAtual += 1
+    }
+}
+```
+
+A função merge faz a intercalação de dois arrays, pecorrendo todas as posições dos vetores, com custo de n = m<sub>1</sub> + m<sub>2</sub>, onde m<sub>1</sub> e m<sub>2</sub> são os tamanhos do vetor 1 e vetor 2, respectivamente.
+
+Assim, verifica-se que nosso método principal faz duas chamadas recursivas com tamanhos de entrada divididos pela metade, logo com tempo de execução representado por $T(\frac{n}{2})$ cada uma.
+
+Portanto, a complexidade total é:
+
+<br>
+
+$$
+T(n) =
+\begin{cases}
+O(1),  \text{ se } n ≤ 1\\
+2T(\frac{n}{2}) + n,  \text{ se } n > 1
+\end{cases}
+$$
+
+<br>
+
+#### 1.2.2.1 MÉTODO DA SUBSTITUIÇÃO
+
+#### 1.2.2.2 MÉTODO DA ITERAÇÃO
+
+Considerando que o recorrência acima. Vamos expandir-la até encontrar o caso base.
+
+<br>
+
+Aplica-se *n*/2 sobre a fórmula de T(n). E assim por diante.
+
+<br>
+
+\begin{align*}
+T(n) &= 2T(\frac{n}{2}) + n,\\
+&= 2(2T(\frac{n}{4}) + \frac{n}{2}) + n\\
+&= 2(2(2T(\frac{n}{8}) + \frac{n}{4}) + \frac{n}{2}) + n\\
+&= ...\\
+T(n) &= 2^kT(\frac{n}{2^k}) + k.n
+\end{align*}
+
+<br>
+
+Vamos encontrar para qual valor de k, $\frac{n}{2^k} = 1$.
+
+<br>
+
+\begin{align*}
+\frac{n}{2^k} = 1 &\implies n = 2^k\\
+&\implies k = log_{2} n
+\end{align*}
+
+<br>
+
+Aplicando na recorrência:
+
+<br>
+
+\begin{align*}
+T(n) &= 2^{log_{2} n}T(\frac{n}{2^{log_{2} n}}) + n.{log_{2} n} \\
+&= n.T(\frac{n}{n}) + n.{log_{2} n} \\
+&= n + n.log_{2} n
+\end{align*}\\
+
+<br>
+
+Portanto, a complexidade total é:
+
+<br>
+
+\begin{align*}
+T(n) &= O(n\log_{}n)
+\end{align*}
+
+<br>
+
+#### 1.2.2.3 MÉTODO DA ARVORE DE RECURSÃO
+
+A árvore de chamadas do MergeSort começa com um nó raiz que representa o problema original de tamanho $\frac{n}{2}$. Em cada nível da árvore, o array é dividido em duas sublistas de tamanhos iguais, resultando em duas chamadas recursivas para problemas de tamanho . Cada uma dessas chamadas recursivas gera mais dois nós, e assim por diante.
+
+Esse processo de divisão continua até atingirmos o caso base, em que o tamanho do array é $n=1$, como mostrado a seguir:
+
+```
+           T(n)------------------n
+          /    \
+         /      \
+  T(n/2)          T(n/2)---------2n/2 = n
+  /   \           /   \
+ /     \         /     \
+T(n/4) T(n/4) T(n/4) T(n/4)-----4n/4 = n
+ ...     ...   ...     ...
+T(1)
+```
+
+A altura da árvore é o número de níveis até chegar ao caso base. Na primeira chamada recursiva, temos o termo $T(\frac{n}{2})$, em seguida $T(\frac{n}{2^2})$, $T(\frac{n}{2^3})$,... até $T(\frac{n}{2^h}) = T(1)$, onde h corresponde a altura da árvore.
+
+Calculando h:
+
+<br>
+
+\begin{align*}
+T(\frac{n}{2^h}) = T(1) &\implies \frac{n}{2^h} = 1\\
+&\implies n = 2^h\\
+&\implies \log_{2}n = \log_{2}2^h\\
+&\implies h = \log_{2}n\\
+\end{align*}
+
+<br>
+
+Como o tempo de execução do algoritmo corresponde corresponde a soma dos passos de todos os níveis, temos:
+
+<br>
+
+\begin{align*}
+T(n) &= \sum_{i=0}^{h} n\\
+&= n\sum_{i=0}^{h} 1\\
+&= n(\log_{2}n + 1)\\
+&= O(n\log_{}n)\\
+\end{align*}
+
+<br>
+
+#### 1.2.2.4 MÉTODO DO TEOREMA MESTRE
+
+!TODO
 
 ## 1.3 QUICKSORT
 
@@ -334,7 +500,7 @@ function particionar(array, esquerda, direita) {
 }
 ```
 
-#### Pior caso
+##### Pior caso
 
 Quando o array está ordenado e o pivô escolhido é sempre o maior ou menor elemento, a função particionar divide o array em uma sublista vazia e uma sublista com n−1 elementos. Assim, Cada chamada para particionar tem um custo de Θ(n) no pior caso, pois é necessário percorrer o array para posicionar o pivô corretamente.
 
@@ -348,7 +514,8 @@ $$
 
 <br>
 
-#### Melhor caso
+##### Melhor caso
+
 No melhor caso, o pivô divide o array em duas partes de tamanho $n/2$, na primeira chamada, $n/4$, na segunda chamada, $n/8$, na terceira chamada,..., $n/2^i$, para i chamadas. Isso resulta em custo $\log_{}n$.
 Como partionamento tem custo $Θ(n)$, então o custo total é:
 
@@ -359,6 +526,136 @@ T(n) = Ω(n\log_{}n)
 $$
 
 <br>
+
+### 1.3.2 VERSÃO RECURSIVA
+
+O QuickSort é um algoritmo de ordenação que funciona dividindo repetidamente o array em duas partes menores até que cada subarray tenha no máximo um elemento.
+
+```
+function quickSort(array, esquerda, direita) {
+    se esquerda >= direita {
+	retornar
+    }
+
+    pivoIndex = particionar(array, esquerda, direita)
+
+        
+    quickSort(array, esquerda, pivoIndex - 1)
+    quickSort(array, pivoIndex + 1, direita)
+}
+```
+
+A função *particionar* percorre o array usando o índice j, comparando cada elemento array[j] com o pivô. Se o valor de array[j] é menor ou igual ao pivô, ele é trocado com o elemento na posição i, que mantém a posição de divisão entre os elementos menores e maiores que o pivô. Ao final do loop, todos os elementos à esquerda de i são menores ou iguais ao pivô, e todos os elementos à direita são maiores.
+
+```
+function particionar(array, esquerda, direita) {
+
+    pivo = array[direita]
+    i = esquerda - 1
+
+    para j de esquerda até direita - 1 {
+        se array[j] ≤ pivo {
+            i += 1
+            trocar array[i] com array[j]
+        }
+    }
+
+    trocar array[i + 1] com array[direita]
+    retornar i + 1
+}
+```
+
+---
+
+No pior caso do QuickSort, a função particionar divide o array de forma altamente desbalanceada, resultando em uma sublista vazia e uma sublista com n−1 elementos. Isso acontece, por exemplo, quando o array já está ordenado e o pivô escolhido é o maior ou menor elemento. Como a função particionar tem complexidade Θ(1), a recorrencia pode ser expressa como:
+
+<br>
+
+$$
+T(n) = T(n-1) + n
+$$
+
+<br>
+
+No melhor caso do QuickSort, cada chamada de particionamento divide o array em duas sublistas de tamanho aproximadamente n/2. Isso resulta na seguinte recorrência:
+
+$$
+T(n) = 2T(\frac{n}{2}) + n
+$$
+
+Onde $2T(\frac{n}{2})$ representa o custo das duas chamadas recursivas em subarrays de tamanho $\frac{n}{2}$.
+
+Como visto na analise do Merge Sort, tal recorrência tem custo:
+
+<br>
+
+$$
+T(n) = O(n * \log{2})
+$$
+
+<br>
+
+#### 1.3.2.1 MÉTODO DA SUBSTITUIÇÃO
+
+#### 1.3.2.2 MÉTODO DA ITERAÇÃO
+
+Considerando que o recorrência acima. Vamos expandir-la até encontrar o caso base.
+
+<br>
+
+Aplica-se *n* -1 sobre a fórmula de T(n). E assim por diante.
+
+<br>
+
+\begin{align*}
+T(n) &= T(n-1) + n,\\
+&= (T(n-2) + n) + n\\
+&= ((T(n - 3) + n)+ n) + n\\
+&= ...\\
+T(n) &= T(n-k) + k.n
+\end{align*}
+
+<br>
+
+Note que,
+
+<br>
+
+\begin{align*}
+n - k = 1 &\implies k = n - 1\\
+\end{align*}
+
+<br>
+
+Aplicando na recorrência:
+
+<br>
+
+\begin{align*}
+T(n) &= T(n-k) + k.n,\\
+&= T(n-(n-1)) + n(n-1)\\
+&= T(1) + n^2 - n\\
+&= 1 + n^2 - n
+\end{align*}
+
+<br>
+
+Portanto, a complexidade no pior caso é:
+
+<br>
+
+\begin{align*}
+T(n) &= O(n^2)
+\end{align*}
+
+<br>
+
+#### 1.3.2.3 MÉTODO DA ARVORE DE RECURSÃO
+
+#### 1.3.2.4 MÉTODO DO TEOREMA MESTRE
+
+
+
 
 # 2. IMPLEMENTAÇÕES
 
