@@ -75,6 +75,143 @@ T(n) = Θ(n^2)
 $$
 
 
+### 1.1.2 VERSÃO RECURSIVA
+
+
+Neste algoritmo de ordenação, são efetuadas comparações entre os dados amarzenados em um array de tamanho n. Cada elemento de posição *i*  será comparado com o elemento de posição *i* + 1, se o primeiro for maior (no caso de ordenação crescente), os elemento trocam de posições. Então o algoritmo chama a si mesmo até a coleção estar completamente ordenada.
+
+```
+function bubbleSort(array, tamanho) {
+    se tamanho <= 1 {                      // Θ(1)
+	retornar
+    }
+    para i de 0 até tamanho-1 {            // Θ(n - 1)
+	    se array[i] > array[i+1] {
+          trocar array[i] com array[i+1]
+        }
+    }
+    bubbleSort( array, tamanho-1)         // T(n - 1)
+}
+
+```
+
+---
+
+Analisando a função verifique que há um laço que faz *n* - 1 comparações. Além da chamada recursiva com tamanho de entrada decrementado em 1, logo com tempo de execução representado por T(*n* - 1). Assim, temos a seguinte expressão de recorrência:
+
+<br>
+
+$$
+T(n) =
+\begin{cases}
+O(1),  \text{ se } n ≤ 1\\
+T(n−1)+ (n-1),  \text{ se } n > 1
+\end{cases}
+$$
+
+<br>
+
+#### 1.1.2.1 MÉTODO DA SUBSTITUIÇÃO
+
+Considerando a recorrência acima, mostraremos que o algoritmo é limitado por O(n²).
+
+Temos $T(n) \leq T(n-1) + n$, queremos mostrar que T(n) é limitada superiormente por uma função F(n) = cn², para algum c. Para isso usaremos indução.
+
+###### Caso base:
+
+$n = 1, T(1) = 1$
+
+$$
+T(n) \leq cn² \implies T(1) = 1 \leq c(1²) \implies 1 \leq c
+$$
+
+###### Passo indutivo:
+
+Hipotese: $T(k) \leq ck², (∀k)[1 \leq k \leq n]$
+
+$$
+\begin{align*}
+T(n) \leq cn² &\implies T(n-1) + n \leq c(n-1)² + n \leq cn² \\
+&\implies c(n² -2n + 1) + n \leq cn² \\
+&\implies cn² -2nc + c + n \leq cn² \\
+&\implies -2nc + c + n \leq 0 \\
+&\implies c + n(1 - 2c) \leq 0
+\end{align*}
+$$
+
+Como `n` é sempre um valor positivo e tende ao infinito, para que $c + n(1 - 2c) < 0$ seja verdade, precisamos que $1-2c < 0$.
+
+
+$$
+\begin{align*}
+1-2c < 0 &\implies 1 < 2c \\
+&\implies c > 1/2 \\
+\end{align*}
+$$
+
+Logo, $T(n)$ é $O(n²)$.
+
+#### 1.1.2.2 MÉTODO DA ITERAÇÃO
+
+Considerando que o recorrência acima. Vamos expandir-la até encontrar o caso base.
+
+<br>
+
+Aplica-se *n* -1 sobre a fórmula de T(n). E assim por diante.
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= T(n-1) + (n-1),\\
+&= (T(n-2) + (n-2)) + (n-1)\\
+&= (T(n-3) + (n-3) + (n-2)) + (n-1)\\
+&= ...\\
+T(n) &= T(n - k) +  \sum_{i=1}^{k} n - i
+\end{align*}
+$$
+
+<br>
+
+Quando k = n -1, temos:
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= T(1) + (n−1)+(n−2)+…+1
+\end{align*}
+$$
+
+<br>
+
+Que é igual a:
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= T(1) + \frac{n(n-1)}{2}
+\end{align*}
+$$
+
+<br>
+
+Aqui, T(1) representa o custo da função no caso base. Podemos assumir que T(1) = O(1), já que não há comparações necessárias quando temos apenas um elemento.
+
+Portanto, a complexidade total é:
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= O(n^2)
+\end{align*}
+$$
+
+<br>
+
+
 ## 1.2 MERGESORT
 
 ### 1.2.1 VERSÃO ITERATIVA 
