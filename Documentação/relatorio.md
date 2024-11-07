@@ -697,7 +697,7 @@ Assim, a complexidade de idadeRep2 é O(n log n).
 
 ### 2.2.3 Análise de Resultados
 
-A tabela a seguir mostra como as funções idadeRep e idadeRep2 se comportaram com entrada de cem, mil e um bilhão.
+A tabela a seguir mostra como as funções idadeRep e idadeRep2 se comportaram com entrada de cem, mil e um milhão.
 
 | Tamanho | IdadeRep | IdadeRep2 |
 |---|---|---|
@@ -736,4 +736,11 @@ A complexidade da função bBinRec é O(log n), onde n é o número de elementos
 
 ### 2.3.3 Análise de Resultados
 
+A tabela a seguir mostra os resultados de tempo de execução das funções buscaBinaria e bBinRec com vetores de 100, 1000 e 10000 elementos.
+
+| Tamanho | buscaBinaria | bBinRec |
+|:-:|:-:|:-:|
+| 100 | 5μs | 4μs |
+| 1000 | 6μs | 4μs |
+| 10000 | 7μs | 4μs |
 
