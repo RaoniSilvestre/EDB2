@@ -1,14 +1,19 @@
+
 # INTRODUÇÃO
 
 O presente relatório foi produzido para a atividade 01 da disciplina de Estruturas de Dados Básicas 2, pelo grupo composto por Hélio Lima Carvalho, Pedro Galvão do Amaral Neto, Raoni Marti Silvestre Silva e Thiago Freire Cavalcante.
 
 Os pseudocódigos foram produzidos por Hélio Lima Carvalho, a análise teórica foi realizada por Thiago Freire Cavalcante e Raoni Marti Silvestre Silva. As implementações solicitadas pela atividade foram realizadas por todos os componentes do grupo.
 
+
 # 1. ANALISE TEORICA
+
 
 ## 1.1 BUBBLESORT
 
+
 ### 1.1.1 VERSÃO ITERATIVA
+
 
 Pseudocódigo da versão iterativa:
 
@@ -83,6 +88,7 @@ $$
 
 ### 1.1.2 VERSÃO RECURSIVA
 
+</br>
 
 Neste algoritmo de ordenação, são efetuadas comparações entre os dados amarzenados em um array de tamanho n. Cada elemento de posição *i*  será comparado com o elemento de posição *i* + 1, se o primeiro for maior (no caso de ordenação crescente), os elemento trocam de posições. Então o algoritmo chama a si mesmo até a coleção estar completamente ordenada.
 
@@ -101,7 +107,6 @@ function bubbleSort(array, tamanho) {
 
 ```
 
----
 
 Analisando a função verifique que há um laço que faz *n* - 1 comparações. Além da chamada recursiva com tamanho de entrada decrementado em 1, logo com tempo de execução representado por T(*n* - 1). Assim, temos a seguinte expressão de recorrência:
 
@@ -115,13 +120,11 @@ T(n−1)+ (n-1),  \text{ se } n > 1
 \end{cases}
 $$
 
-<br>
 
 #### 1.1.2.1 MÉTODO DA SUBSTITUIÇÃO
 
-Considerando a recorrência acima, mostraremos que o algoritmo é limitado por O(n²).
 
-Temos $T(n) \leq T(n-1) + n$, queremos mostrar que T(n) é limitada superiormente por uma função F(n) = cn², para algum c. Para isso usaremos indução.
+Considerando a recorrência acima, mostraremos que o algoritmo é limitado por O(n²).Temos $T(n) \leq T(n-1) + n$, queremos mostrar que T(n) é limitada superiormente por uma função F(n) = cn², para algum c. Para isso usaremos indução.
 
 ###### Caso base:
 
@@ -154,6 +157,8 @@ Como `n` é sempre um valor positivo e tende ao infinito, para que $c + n(1 - 2c
 Logo, $T(n)$ é $O(n²)$.
 
 #### 1.1.2.2 MÉTODO DA ITERAÇÃO
+
+<br>
 
 Considerando que o recorrência acima. Vamos expandir-la até encontrar o caso base.
 
@@ -227,12 +232,10 @@ Calculando h:
 
 <br>
 
-$$
 \begin{align*}
 T(n - h) = T(1) &\implies n - h = 1\\
 &\implies h = n - 1\\
 \end{align*}
-$$
 
 <br>
 
@@ -240,14 +243,12 @@ Como o tempo de execução do algoritmo corresponde corresponde a soma dos passo
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= \sum_{i=0}^{h} (n - i)\\
 &= \sum_{i=0}^{h} n - \sum_{i=0}^{h} i \\
 &= n^2 + \frac{n(n - 1)}{2}\\
 &= O(n^2)\\
 \end{align*}
-$$
 
 <br>
 
@@ -303,9 +304,6 @@ function merge(array, esquerda, meio, direita) {
 
 }
 ```
-
----
-
 
 Vamos começar analisando a função merge, que faz a intercalação de dois arrays, pecorrendo todas as posições dos vetores, com custo de n = m<sub>1</sub> + m<sub>2</sub>, onde m<sub>1</sub> e m<sub>2</sub> são os tamanhos do vetor 1 e vetor 2, respectivamente. Logo a complexidade de tempo da função merge é $T(n) = O(n)$.
 
@@ -419,7 +417,6 @@ $$
 
 Hipotese: $T(k) \leq kc\log{k},  (∀k)[1 \leq k \leq n]$
 
-$$
 \begin{align*}
 T(n) \leq nc\log{n} &\implies 2T(\frac{n}{2}) + n \leq 2c\frac{n}{2}\log{\frac{n}{2}} + n \leq nc\log{n} \\
 &\implies nc* \log{n} - nc* \log{2} + n  \leq nc\log{n} \\
@@ -428,7 +425,6 @@ T(n) \leq nc\log{n} &\implies 2T(\frac{n}{2}) + n \leq 2c\frac{n}{2}\log{\frac{n
 &\implies n(1 - c) \leq 0 \\
 &\implies 1 \leq c
 \end{align*}
-$$
 
 Logo $T(n) = \Theta(n\log{n})$.
 
@@ -471,7 +467,7 @@ Aplicando na recorrência:
 T(n) &= 2^{log_{2} n}T(\frac{n}{2^{log_{2} n}}) + n.{log_{2} n} \\
 &= n.T(\frac{n}{n}) + n.{log_{2} n} \\
 &= n + n.log_{2} n
-\end{align*}\\
+\end{align*}
 
 <br>
 
@@ -687,7 +683,6 @@ $$
 
 Hipotese: $T(k) \leq ck², (∀k)[1 \leq k \leq n]$
 
-$$
 \begin{align*}
 T(n) \leq cn² &\implies T(n-1) + n \leq c(n-1)² + n \leq cn² \\
 &\implies c(n² -2n + 1) + n \leq cn² \\
@@ -695,16 +690,13 @@ T(n) \leq cn² &\implies T(n-1) + n \leq c(n-1)² + n \leq cn² \\
 &\implies -2nc + c + n \leq 0 \\
 &\implies c + n(1 - 2c) \leq 0
 \end{align*}
-$$
 
 Como `n` é sempre um valor positivo e tende ao infinito, para que $c + n(1 - 2c) < 0$ seja verdade, precisamos que $1-2c < 0$.
 
-$$
 \begin{align*}
 1-2c < 0 &\implies 1 < 2c \\
 &\implies c > 1/2 \\
 \end{align*}
-$$
 
 Logo, T(n) é O(n²).
 
@@ -725,7 +717,6 @@ $$
 
 Hipotese: $T(k) \leq kc\log{k},  (∀k)[1 \leq k \leq n]$
 
-$$
 \begin{align*}
 T(n) \leq nc\log{n} &\implies 2T(\frac{n}{2}) + n \leq 2c\frac{n}{2}\log{\frac{n}{2}} + n \leq nc\log{n} \\
 &\implies nc* \log{n} - nc* \log{2} + n  \leq nc\log{n} \\
@@ -734,7 +725,6 @@ T(n) \leq nc\log{n} &\implies 2T(\frac{n}{2}) + n \leq 2c\frac{n}{2}\log{\frac{n
 &\implies n(1 - c) \leq 0 \\
 &\implies 1 \leq c
 \end{align*}
-$$
 
 Logo $T(n) = \Omega(n\log{n})$.
 
@@ -814,12 +804,10 @@ Calculando h:
 
 <br>
 
-$$
 \begin{align*}
 T(n - h) = T(1) &\implies n - h = 1\\
 &\implies h = n - 1\\
 \end{align*}
-$$
 
 <br>
 
@@ -827,14 +815,12 @@ Como o tempo de execução do algoritmo corresponde corresponde a soma dos passo
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= \sum_{i=0}^{h} (n - i)\\
 &= \sum_{i=0}^{h} n - \sum_{i=0}^{h} i \\
 &= n^2 + \frac{n(n - 1)}{2}\\
 &= O(n^2)\\
 \end{align*}
-$$
 
 <br>
 
@@ -844,11 +830,9 @@ Já no melhor caso, o quickSort se comporta igual ao mergeSort.
 
 Pelo Teorema Mestre, podemos resolver uma recorrência que possua a forma:
 
-$$
 \begin{align*}
 T(n) &= aT(\frac{n}{b}) + Θ(n^k)\\
 \end{align*}
-$$
 
 sendo $a, b > 1$ e $k≥ 0$.
 
@@ -858,11 +842,9 @@ No melhor caso, a recorrência é igual ao mergeSort, logo temos $a = 2$, $b=2$ 
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= 2T(\frac{n}{2}) + n\\
 \end{align*}
-$$
 
 <br>
 
@@ -870,11 +852,9 @@ Note que
 
 <br>
 
-$$
 \begin{align*}
 2 = 2^1 &\implies a = b^k\\
 \end{align*}
-$$
 
 <br>
 
@@ -882,11 +862,9 @@ O teorema Mestre diz que, nesse caso, $T(n)$ é $θ(n^k\log_{}n)$. Portanto,
 
 <br>
 
-$$
 \begin{align*}
 T(n) &= Θ(n\log_{}n)
 \end{align*}
-$$
 
 <br>
 
@@ -901,7 +879,7 @@ As implementações dos códigos foram feitas na maior quantidade de linguagens 
 - Uma para a busca binária: C
 - Uma para os algoritmos de ordenação: Rust
 
-A escolha foi feita pela familiaridade dos integrantes do grupo com tais linguagens, e para demonstrar o uso generalizado dos algoritmos apresentados na atividade. Vale ressaltar que as linguagens foram separadas de forma que o resultado final da execução dos algoritmos não fosse afetado, ou seja, todas as implementações de um mesmo tipo de algoritmo foram feitas na mesma linguagem, para manter a confiabilidade e consistência da análise dos resultados.
+A escolha foi feita pela familiaridade dos integrantes do grupo com tais linguagens, e porque parecia mais divertido utilizar mais linguagens visto que a escolha é livre. Isso de forma que a escolha das linguagens não prejudique os resultados, obviamente.
 
 ## 2.1 AMBIENTE COMPUTACIONAL UTILIZADO
 
@@ -913,7 +891,7 @@ Todas as implementações foram cronometradas utilizando os métodos apropriados
 
 ## 2.2 FUNÇÕES ITERATIVAS - IDADEREP e IDADEREP2
 
-As funções a seguir foram implementadas na linguagem de programação lua, pelo integrante Hélio Lima Carvalho.
+Essas funções foram implementadas na linguagem de programação lua, devido a um integrante que gosta muito de lua!
 
 ### 2.2.1 IdadeRep
 
@@ -956,8 +934,6 @@ Portanto, idadeRep é mais eficiente assintoticamente, como evidenciado pelos te
 
 ## 2.3 FUNÇÕES RECURSIVAS - BUSCABINARIA E BBINREC
 
-As funções a seguir foram implementadas na linguagem de programação C, pelo integrante Pedro Galvão do Amaral Neto.
-
 ### 2.3.1 BuscaBinaria
 
 A função buscaBinaria implementa o algoritmo de busca binária, em sua versão iterativa, para encontrar a posição de um elemento (chave) em um vetor ordenado. Inicialmente, os índices da esquerda (esq) e direita (dir) são definidos como os extremos do vetor. Em cada iteração do loop while, o índice do meio (m) é calculado. Se o valor no índice m for menor que a chave, o índice esquerdo é movido para m + 1; caso contrário, o índice direito é ajustado para m. Esse processo continua até que esq e dir se encontrem. Quando o loop termina, a função verifica se o elemento encontrado é a chave buscada; se for, retorna o índice esq, caso contrário, retorna -1. 
@@ -987,8 +963,6 @@ A tabela a seguir mostra os resultados de tempo de execução das funções busc
 Entretanto, a recursão pode consumir mais memória de pilha, o que, para vetores muito grandes, pode se tornar uma limitação. A partir desses resultados, pode-se concluir que bBinRec é mais eficiente em termos de tempo, especialmente para vetores de tamanho moderado, embora a eficiência de memória de buscaBinaria possa ser preferível em casos específicos onde o uso de pilha é uma preocupação.
 
 ## 2.4 ALGORITMOS DE ORDENAÇÃO - BUBBLESORT, QUICKSORT E MERGESORT
-
-As funções foram implementadas na linguagem de programação Rust, pelos integrantes Raoni Marti Silvestre Silva e Thiago Freire Cavalcante.
 
 ### 2.4.1 Bubblesort
 
