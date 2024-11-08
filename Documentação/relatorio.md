@@ -1,3 +1,9 @@
+# INTRODUÇÃO
+
+O presente relatório foi produzido para a atividade 01 da disciplina de Estruturas de Dados Básicas 2, pelo grupo composto por Hélio Lima Carvalho, Pedro Galvão do Amaral Neto, Raoni Marti Silvestre Silva e Thiago Freire Cavalcante.
+
+Os pseudocódigos foram produzidos por Hélio Lima Carvalho, a análise teórica foi realizada por Thiago Freire Cavalcante e Raoni Marti Silvestre Silva. As implementações solicitadas pela atividade foram realizadas por todos os componentes do grupo.
+
 # 1. ANALISE TEORICA
 
 ## 1.1 BUBBLESORT
