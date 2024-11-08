@@ -665,7 +665,7 @@ As implementações dos códigos foram feitas na maior quantidade de linguagens 
 - Uma para a busca binária: C
 - Uma para os algoritmos de ordenação: Rust
 
-A escolha foi feita pela familiaridade dos integrantes do grupo com tais linguagens, e porque parecia mais divertido utilizar mais linguagens visto que a escolha é livre. Isso de forma que a escolha das linguagens não prejudique os resultados, obviamente.
+A escolha foi feita pela familiaridade dos integrantes do grupo com tais linguagens, e para demonstrar o uso generalizado dos algoritmos apresentados na atividade. Vale ressaltar que as linguagens foram separadas de forma que o resultado final da execução dos algoritmos não fosse afetado, ou seja, todas as implementações de um mesmo tipo de algoritmo foram feitas na mesma linguagem, para manter a confiabilidade e consistência da análise dos resultados.
 
 ## 2.1 AMBIENTE COMPUTACIONAL UTILIZADO
 
@@ -677,7 +677,7 @@ Todas as implementações foram cronometradas utilizando os métodos apropriados
 
 ## 2.2 FUNÇÕES ITERATIVAS - IDADEREP e IDADEREP2
 
-Essas funções foram implementadas na linguagem de programação lua, devido a um integrante que gosta muito de lua!
+As funções a seguir foram implementadas na linguagem de programação lua, pelo integrante Hélio Lima Carvalho.
 
 ### 2.2.1 IdadeRep
 
@@ -720,6 +720,8 @@ Portanto, idadeRep é mais eficiente assintoticamente, como evidenciado pelos te
 
 ## 2.3 FUNÇÕES RECURSIVAS - BUSCABINARIA E BBINREC
 
+As funções a seguir foram implementadas na linguagem de programação C, pelo integrante Pedro Galvão do Amaral Neto.
+
 ### 2.3.1 BuscaBinaria
 
 A função buscaBinaria implementa o algoritmo de busca binária, em sua versão iterativa, para encontrar a posição de um elemento (chave) em um vetor ordenado. Inicialmente, os índices da esquerda (esq) e direita (dir) são definidos como os extremos do vetor. Em cada iteração do loop while, o índice do meio (m) é calculado. Se o valor no índice m for menor que a chave, o índice esquerdo é movido para m + 1; caso contrário, o índice direito é ajustado para m. Esse processo continua até que esq e dir se encontrem. Quando o loop termina, a função verifica se o elemento encontrado é a chave buscada; se for, retorna o índice esq, caso contrário, retorna -1. 
@@ -749,6 +751,8 @@ A tabela a seguir mostra os resultados de tempo de execução das funções busc
 Entretanto, a recursão pode consumir mais memória de pilha, o que, para vetores muito grandes, pode se tornar uma limitação. A partir desses resultados, pode-se concluir que bBinRec é mais eficiente em termos de tempo, especialmente para vetores de tamanho moderado, embora a eficiência de memória de buscaBinaria possa ser preferível em casos específicos onde o uso de pilha é uma preocupação.
 
 ## 2.4 ALGORITMOS DE ORDENAÇÃO - BUBBLESORT, QUICKSORT E MERGESORT
+
+As funções foram implementadas na linguagem de programação Rust, pelos integrantes Raoni Marti Silvestre Silva e Thiago Freire Cavalcante.
 
 ### 2.4.1 Bubblesort
 
