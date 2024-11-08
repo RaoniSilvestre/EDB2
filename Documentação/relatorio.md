@@ -685,7 +685,7 @@ A função idadeRep percorre a lista duas vezes:
 
 O primeiro for percorre a lista para encontrar o menor valor (caso o menor valor seja menor que 200), com complexidade de O(n), onde n é o tamanho da lista.
 O segundo for verifica se o menor valor está presente na lista, também com complexidade O(n), com a verificação podendo ser interrompida antecipadamente caso encontrá-lo.
-Portanto, a complexidade de idadeRep é O(2n), o que é linear.
+Portanto, a complexidade de idadeRep é O(2n), ou seja, linear.
 
 ### 2.2.2 IdadeRep2
 
@@ -693,7 +693,7 @@ Por outro lado, a função idadeRep2 ordena a lista e faz uma comparação:
 
 A chamada a table.sort() ordena a lista com complexidade O(n log n).
 Em seguida, há uma comparação entre os dois primeiros elementos, uma operação de custo O(1).
-Assim, a complexidade de idadeRep2 é O(n log n).
+Dessa forma, a complexidade de idadeRep2 é O(n log n).
 
 ### 2.2.3 Análise de Resultados
 
