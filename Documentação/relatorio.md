@@ -199,6 +199,51 @@ T(n) &= O(n^2)
 
 <br>
 
+#### 1.2.2.3 MÉTODO DA ARVORE DE RECURSÃO
+
+A árvore de chamadas do bubbleSort começa com um nó raiz que representa o problema original de tamanho $n$ que dará origem a um filho, que por sua vez, dará origem a um filho e assim por diante até atingirmos o caso base, em que o tamanho do array é $n=1$, como mostrado a seguir:
+
+```
+T(n)------------------1n
+  |
+  |
+        
+T(n-1)----------------1(n-1)
+  |
+  |
+T(n-2)----------------1(n-2)
+ ...
+T(1)
+```
+A altura da árvore é o número de níveis até chegar ao caso base. Na primeira chamada recursiva, temos o termo $T(n)$, em seguida $T(n-1)$, $T(n-2)$,... até $T(n - h) = T(1)$, onde h corresponde a altura da árvore.
+
+Calculando h:
+
+<br>
+
+$$
+\begin{align*}
+T(n - h) = T(1) &\implies n - h = 1\\
+&\implies h = n - 1\\
+\end{align*}
+$$
+
+<br>
+
+Como o tempo de execução do algoritmo corresponde corresponde a soma dos passos de todos os níveis, temos:
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= \sum_{i=0}^{h} (n - i)\\
+&= \sum_{i=0}^{h} n - \sum_{i=0}^{h} i \\
+&= n^2 + \frac{n(n - 1)}{2}\\
+&= O(n^2)\\
+\end{align*}
+$$
+
+<br>
 
 ## 1.2 MERGESORT
 
@@ -352,6 +397,35 @@ $$
 
 #### 1.2.2.1 MÉTODO DA SUBSTITUIÇÃO
 
+Para todos os casos, teremos:
+
+###### Caso base:
+
+O caso n = 1 quebra pois log(1) = 0, então usaremos n = 2 como caso base.
+
+$n = 2; T(2) = 2(1) + 2 = 4$
+
+$$
+T(2) \leq 2c \log{2} \implies 4 \leq 2 * c * 1 \implies c \geq 2
+$$
+
+###### Passo indutivo:
+
+Hipotese: $T(k) \leq kc\log{k},  (∀k)[1 \leq k \leq n]$
+
+$$
+\begin{align*}
+T(n) \leq nc\log{n} &\implies 2T(\frac{n}{2}) + n \leq 2c\frac{n}{2}\log{\frac{n}{2}} + n \leq nc\log{n} \\
+&\implies nc* \log{n} - nc* \log{2} + n  \leq nc\log{n} \\
+&\implies -nc*(1) + n \leq 0 \\
+&\implies -nc + n \leq 0 \\
+&\implies n(1 - c) \leq 0 \\
+&\implies 1 \leq c
+\end{align*}
+$$
+
+Logo $T(n) = \Theta(n\log{n})$.
+
 #### 1.2.2.2 MÉTODO DA ITERAÇÃO
 
 Considerando que o recorrência acima. Vamos expandir-la até encontrar o caso base.
@@ -450,10 +524,6 @@ T(n) &= \sum_{i=0}^{h} n\\
 \end{align*}
 
 <br>
-
-#### 1.2.2.4 MÉTODO DO TEOREMA MESTRE
-
-!TODO
 
 ## 1.3 QUICKSORT
 
@@ -590,12 +660,77 @@ Como visto na analise do Merge Sort, tal recorrência tem custo:
 <br>
 
 $$
-T(n) = O(n * \log{2})
+T(n) = O(n * \log{n})
 $$
 
 <br>
 
 #### 1.3.2.1 MÉTODO DA SUBSTITUIÇÃO
+
+Para o pior caso do quicksort, teremos como recorrência $T(n) = T(n-1) + n$.
+
+###### Caso base:
+
+$n = 1, T(1) = 1$
+
+$$
+T(n) \leq cn² \implies T(1) = 1 \leq c(1²) \implies 1 \leq c
+$$
+
+###### Passo indutivo:
+
+Hipotese: $T(k) \leq ck², (∀k)[1 \leq k \leq n]$
+
+$$
+\begin{align*}
+T(n) \leq cn² &\implies T(n-1) + n \leq c(n-1)² + n \leq cn² \\
+&\implies c(n² -2n + 1) + n \leq cn² \\
+&\implies cn² -2nc + c + n \leq cn² \\
+&\implies -2nc + c + n \leq 0 \\
+&\implies c + n(1 - 2c) \leq 0
+\end{align*}
+$$
+
+Como `n` é sempre um valor positivo e tende ao infinito, para que $c + n(1 - 2c) < 0$ seja verdade, precisamos que $1-2c < 0$.
+
+$$
+\begin{align*}
+1-2c < 0 &\implies 1 < 2c \\
+&\implies c > 1/2 \\
+\end{align*}
+$$
+
+Logo, T(n) é O(n²).
+
+Para o melhor caso, teremos como recorrência $T(n) = 2T(\frac{n}{2}) + n$.
+
+
+###### Caso base:
+
+O caso n = 1 quebra pois log(1) = 0, então usaremos n = 2 como caso base.
+
+$n = 2; T(2) = 2(1) + 2 = 4$
+
+$$
+T(2) \leq 2c \log{2} \implies 4 \leq 2 * c * 1 \implies c \geq 2
+$$
+
+###### Passo indutivo:
+
+Hipotese: $T(k) \leq kc\log{k},  (∀k)[1 \leq k \leq n]$
+
+$$
+\begin{align*}
+T(n) \leq nc\log{n} &\implies 2T(\frac{n}{2}) + n \leq 2c\frac{n}{2}\log{\frac{n}{2}} + n \leq nc\log{n} \\
+&\implies nc* \log{n} - nc* \log{2} + n  \leq nc\log{n} \\
+&\implies -nc*(1) + n \leq 0 \\
+&\implies -nc + n \leq 0 \\
+&\implies n(1 - c) \leq 0 \\
+&\implies 1 \leq c
+\end{align*}
+$$
+
+Logo $T(n) = \Omega(n\log{n})$.
 
 #### 1.3.2.2 MÉTODO DA ITERAÇÃO
 
@@ -652,7 +787,102 @@ T(n) &= O(n^2)
 
 #### 1.3.2.3 MÉTODO DA ARVORE DE RECURSÃO
 
+A árvore de chamadas do quickSort no pior caso começa com um nó raiz que representa o problema original de tamanho $n$ que dará origem a um filho, que por sua vez, dará origem a um filho e assim por diante até atingirmos o caso base, em que o tamanho do array é $n=1$, como mostrado a seguir:
+
+```
+T(n)------------------1n
+  |
+  |
+        
+T(n-1)----------------1(n-1)
+  |
+  |
+T(n-2)----------------1(n-2)
+ ...
+T(1)
+```
+
+A altura da árvore é o número de níveis até chegar ao caso base. Na primeira chamada recursiva, temos o termo $T(n)$, em seguida $T(n-1)$, $T(n-2)$,... até $T(n - h) = T(1)$, onde h corresponde a altura da árvore.
+
+Calculando h:
+
+<br>
+
+$$
+\begin{align*}
+T(n - h) = T(1) &\implies n - h = 1\\
+&\implies h = n - 1\\
+\end{align*}
+$$
+
+<br>
+
+Como o tempo de execução do algoritmo corresponde corresponde a soma dos passos de todos os níveis, temos:
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= \sum_{i=0}^{h} (n - i)\\
+&= \sum_{i=0}^{h} n - \sum_{i=0}^{h} i \\
+&= n^2 + \frac{n(n - 1)}{2}\\
+&= O(n^2)\\
+\end{align*}
+$$
+
+<br>
+
+Já no melhor caso, o quickSort se comporta igual ao mergeSort.
+
 #### 1.3.2.4 MÉTODO DO TEOREMA MESTRE
+
+Pelo Teorema Mestre, podemos resolver uma recorrência que possua a forma:
+
+$$
+\begin{align*}
+T(n) &= aT(\frac{n}{b}) + Θ(n^k)\\
+\end{align*}
+$$
+
+sendo $a, b > 1$ e $k≥ 0$.
+
+Para a recorrência do quickSort no pior caso, não é possível aplicar o teorema.
+
+No melhor caso, a recorrência é igual ao mergeSort, logo temos $a = 2$, $b=2$ e $k = 1$.
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= 2T(\frac{n}{2}) + n\\
+\end{align*}
+$$
+
+<br>
+
+Note que
+
+<br>
+
+$$
+\begin{align*}
+2 = 2^1 &\implies a = b^k\\
+\end{align*}
+$$
+
+<br>
+
+O teorema Mestre diz que, nesse caso, $T(n)$ é $θ(n^k\log_{}n)$. Portanto,
+
+<br>
+
+$$
+\begin{align*}
+T(n) &= Θ(n\log_{}n)
+\end{align*}
+$$
+
+<br>
 
 
 
