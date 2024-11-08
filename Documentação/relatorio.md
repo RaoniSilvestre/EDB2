@@ -915,7 +915,7 @@ A função idadeRep percorre a lista duas vezes:
 
 O primeiro for percorre a lista para encontrar o menor valor (caso o menor valor seja menor que 200), com complexidade de O(n), onde n é o tamanho da lista.
 O segundo for verifica se o menor valor está presente na lista, também com complexidade O(n), com a verificação podendo ser interrompida antecipadamente caso encontrá-lo.
-Portanto, a complexidade de idadeRep é O(2n), o que é linear.
+Portanto, a complexidade de idadeRep é O(2n), ou seja, linear.
 
 ### 2.2.2 IdadeRep2
 
@@ -923,7 +923,7 @@ Por outro lado, a função idadeRep2 ordena a lista e faz uma comparação:
 
 A chamada a table.sort() ordena a lista com complexidade O(n log n).
 Em seguida, há uma comparação entre os dois primeiros elementos, uma operação de custo O(1).
-Assim, a complexidade de idadeRep2 é O(n log n).
+Dessa forma, a complexidade de idadeRep2 é O(n log n).
 
 ### 2.2.3 Análise de Resultados
 
@@ -977,4 +977,110 @@ A tabela a seguir mostra os resultados de tempo de execução das funções busc
 É possível perceber nos resultados apresentados acima que a função bBinRec é consistentemente mais rápida que buscaBinaria para os três tamanhos de vetor testados (100, 1000 e 10000 elementos). Enquanto buscaBinaria apresenta um aumento gradual no tempo de execução conforme o tamanho do vetor cresce (de 5μs para 7μs), bBinRec mantém um tempo constante de 4μs para todos os tamanhos. Essa diferença pode ser atribuída à natureza iterativa de buscaBinaria, que, embora eficiente, envolve verificações adicionais a cada iteração. Em contrapartida, a recursão de bBinRec permite uma eliminação direta de metade do vetor em cada chamada sem repetir verificações, o que resulta em uma leve vantagem de desempenho. 
 
 Entretanto, a recursão pode consumir mais memória de pilha, o que, para vetores muito grandes, pode se tornar uma limitação. A partir desses resultados, pode-se concluir que bBinRec é mais eficiente em termos de tempo, especialmente para vetores de tamanho moderado, embora a eficiência de memória de buscaBinaria possa ser preferível em casos específicos onde o uso de pilha é uma preocupação.
+
+## 2.4 ALGORITMOS DE ORDENAÇÃO - BUBBLESORT, QUICKSORT E MERGESORT
+
+### 2.4.1 Bubblesort
+
+#### 2.4.1.1 Versão Iterativa
+
+A função iterative_bubble_sort implementa o algoritmo de ordenação bolha (ou bubble sort) de forma iterativa em Rust. A função primeiro calcula o tamanho do vetor (len), então utiliza dois loops aninhados para percorrer o vetor e ordenar seus elementos em ordem crescente. No loop externo, que controla o número de passagens, o índice i representa a quantidade de elementos já ordenados ao final do vetor. O loop interno, controlado por j, percorre os elementos não ordenados e compara cada par adjacente (array[j] e array[j + 1]). Caso array[j] seja maior que array[j + 1], os dois elementos são trocados de lugar com array.swap(j, j + 1). Esse processo é repetido até que o vetor esteja completamente ordenado.
+
+A complexidade de tempo do iterative_bubble_sort é O(n²) no pior e no caso médio, onde n é o número de elementos no vetor. Isso ocorre porque, para cada elemento, o algoritmo potencialmente percorre todo o vetor novamente, resultando em 𝑛 × 𝑛 comparações. A complexidade no melhor caso é O(n), quando o vetor já está ordenado, pois o algoritmo pode ser otimizado para detectar que não há necessidade de trocas e parar antes.
+
+#### 2.4.1.2 Versão Recursiva
+
+A função recursive_bubble_sort implementa o algoritmo de ordenação bolha (ou bubble sort) de maneira recursiva em Rust. A função recursive_bubble_sort inicia a chamada à função auxiliar recursive_bubble, que aplica o algoritmo de ordenação bolha recursivamente. Na recursive_bubble, a função primeiro verifica se o tamanho do vetor (n) é 1, caso em que a ordenação está completa e a recursão termina. Caso contrário, recursive_bubble realiza uma passagem de ordenação chamando a função bubble_pass, que compara e troca elementos adjacentes recursivamente ao longo do vetor. Após essa passagem, recursive_bubble é chamada novamente com n - 1, reduzindo gradativamente o tamanho do vetor a ser ordenado até que todos os elementos estejam na posição correta.
+
+A complexidade de tempo dessa implementação é O(n²) no pior e no caso médio, onde n é o número de elementos no vetor, semelhante ao bubble sort iterativo. Isso ocorre porque a função precisa realizar n passagens, cada uma envolvendo até n comparações recursivas em bubble_pass. No melhor caso, onde o vetor já está ordenado, a função ainda possui complexidade O(n²), pois a implementação atual não detecta se o vetor já está ordenado e sempre executa as passagens completas. A implementação recursiva ocupa mais espaço na pilha devido às chamadas recursivas, o que pode ser uma limitação em casos de vetores muito grandes.
+
+#### 2.4.1.3 Análise de Resultados
+
+A tabela a seguir mostra os resultados de tempo de execução das implementações da ordenação de bolha (bubblesort) iterativa e recursiva com vetores de 1000, 10000 e 100000 elementos.
+
+| Tamanho | Bubblesort Iterativo | Bubblesort Recursivo |
+|:---:|:---:|:---:|
+| 1000 | 3.20ms | 3.67ms |
+| 10000 | 338.42ms | 360.27ms |
+| 100000 | 34.23s | 35.83s |
+
+Ambos os algoritmos exibem tempos de execução semelhantes em cada tamanho de vetor, mas a implementação iterativa é consistentemente um pouco mais rápida. Com 1000 elementos, o bubble sort iterativo executa em 3.20 ms, enquanto o recursivo demora 3.67 ms. À medida que o tamanho do vetor aumenta, essa diferença se torna mais significativa: com 10000 elementos, o iterativo leva 338.42 ms contra 360.27 ms para o recursivo, e com 100000 elementos, o iterativo demora 34.23 s, enquanto o recursivo leva 35.83 s.
+
+Essa diferença ocorre porque o bubble sort recursivo tem o mesmo comportamento de tempo assintótico (O(n²)) que a versão iterativa, mas carrega o custo adicional de múltiplas chamadas recursivas, que consomem mais memória de pilha e exigem mais tempo para o gerenciamento das chamadas de função. A recursão, portanto, se torna um fator de sobrecarga crescente conforme o tamanho do vetor aumenta.
+
+### 2.4.2 Quicksort
+
+#### 2.4.2.1 Versão Iterativa
+
+A função iterative_quick_sort implementa o algoritmo de ordenação rápida (ou quick sort) de forma iterativa em Rust. Em vez de usar chamadas recursivas, esta implementação utiliza uma pilha (stack) para armazenar os índices das sublistas a serem ordenadas. Inicialmente, os índices do início (0) e do fim (tamanho - 1) do vetor são empilhados. Em seguida, a função entra em um loop while, onde o limite direito (right) e o limite esquerdo (left) das sublistas são retirados da pilha. A função particionar é chamada para particionar o vetor, colocando elementos menores que o pivô à esquerda e maiores à direita, retornando o índice do pivô final.
+
+Após a partição, a função verifica se há sublistas à esquerda e à direita do pivô que precisam ser ordenadas. Se houver, seus índices são empilhados para serem processados em iterações subsequentes. Esse processo continua até que a pilha esteja vazia, indicando que o vetor está totalmente ordenado.
+
+A complexidade de tempo do iterative_quick_sort é O(n log n) no caso médio e O(n²) no pior caso, onde n é o número de elementos no vetor. A eficiência de O(n log n) no caso médio ocorre porque a função divide repetidamente o vetor ao meio, ordenando cada metade de forma independente. No entanto, no pior caso (por exemplo, se o vetor já estiver quase ordenado ou se sempre for escolhido um pivô ineficiente), a complexidade pode degradar para O(n²).
+
+#### 2.4.2.2 Versão Recursiva
+
+A função recursive_quick_sort implementa o algoritmo de ordenação rápida (ou quick sort) de maneira recursiva em Rust. A função inicializa a ordenação chamando a função sorting, que é responsável por particionar o vetor e chamar-se recursivamente em cada sublista. Na sorting, é verificado se o índice esquerdo (left) é menor que o direito (right). Se for, a função partition é chamada para reorganizar o vetor de forma que todos os elementos menores que o pivô fiquem à esquerda e os maiores à direita, retornando o índice final do pivô (index_pivot). A sorting então chama-se recursivamente para ordenar as sublistas à esquerda e à direita do pivô.
+
+A função partition utiliza o primeiro elemento da sublista como pivô e faz comparações a partir dos extremos (left e right) até que ambos se cruzem. Durante esse processo, ela compara os elementos com o pivô e realiza trocas, ajustando os limites left e right conforme necessário. Quando o loop termina, o pivô é trocado com o elemento em right, completando a partição.
+
+A complexidade de tempo da recursive_quick_sort é O(n log n) no caso médio e O(n²) no pior caso, onde n é o número de elementos, similar à sua implementação iterativa. O caso médio ocorre quando o vetor é dividido aproximadamente ao meio em cada partição, enquanto o pior caso ocorre quando o pivô escolhido resulta em partições muito desbalanceadas, como em vetores quase ordenados.
+
+#### 2.4.2.3 Análise de Resultados
+
+A tabela a seguir mostra os resultados de tempo de execução das implementações da ordenação rápida (quicksort) iterativa e recursiva com vetores de 1000, 10000 e 100000 elementos.
+
+| Tamanho | Quicksort Iterativo | Quicksort Recursivo |
+|:---:|:---:|:---:|
+| 1000 | 147.87µs | 149.96µs |
+| 10000 | 1.21ms | 1.77ms |
+| 100000 | 20.38ms | 55.42ms |
+
+Em todas as instâncias, o quicksort iterativo apresenta tempos de execução mais rápidos do que a versão recursiva, e essa diferença se torna mais pronunciada à medida que o tamanho do vetor aumenta. Para um vetor de 1000 elementos, a diferença é pequena: o quicksort iterativo leva 147.87 µs, enquanto o recursivo leva 149.96 µs. No entanto, com 10000 elementos, o iterativo demora 1.21 ms, enquanto o recursivo leva 1.77 ms. Entretanto, para 100000 elementos, a diferença aumenta de forma significativa, com o quicksort iterativo executando em 20.38 ms e o recursivo demorando 55.42 ms. A diferença nos tempos de execução com o vetor de 100000 elementos indica algum tipo de ineficiência ligada ao maior custo espacial da implementação recursiva.
+
+Esses resultados indicam que a implementação iterativa é mais eficiente, principalmente para vetores maiores, devido ao menor custo de gerenciamento de chamadas de função e uso de memória. O quicksort recursivo, embora seja uma abordagem tradicional e intuitiva para esse algoritmo, acumula sobrecarga de memória de pilha devido às sucessivas chamadas recursivas, o que leva a um desempenho inferior conforme o vetor cresce.
+
+#### 2.4.3 Mergesort
+
+#### 2.4.3.1 Versão Iterativa
+
+A função iterative_merge_sort implementa o algoritmo de ordenação por mesclagem (merge sort) de maneira iterativa em Rust. A função começa chamando a função merge_sorting, que divide e ordena o vetor em pedaços de tamanho crescente, substituindo o vetor original pelo resultado ordenado. Em merge_sorting, o vetor é particionado em sublistas de tamanho i, que dobra em cada iteração do while externo, permitindo que pedaços ordenados sejam mesclados em intervalos crescentes até que todo o vetor seja ordenado. Dentro do loop interno, a função identifica os limites mid e right_arr de cada sublista a ser mesclada e chama a função auxiliar merge para combinar as duas partes.
+
+A função merge recebe duas sublistas (arr_1 e arr_2) e as combina em uma única lista ordenada (result). Ela usa dois índices (i e j) para percorrer ambas as sublistas, adicionando os elementos menores a result em cada etapa até que todos os elementos de uma das listas sejam esgotados. Os elementos restantes de qualquer uma das sublistas são então adicionados a result.
+
+A complexidade de tempo do iterative_merge_sort é O(n log n) tanto no caso médio quanto no pior caso, onde n é o número de elementos no vetor. Isso ocorre porque o algoritmo divide o vetor em duas metades repetidamente e, em seguida, mescla as metades ordenadas, cada etapa exigindo O(n) operações.
+
+#### 2.4.3.2 Versão Recursiva
+
+A função recursive_merge_sort implementa o algoritmo de ordenação por mesclagem (merge sort) de forma recursiva em Rust. A função principal chama merge_sorting, que divide recursivamente o vetor em duas metades até que cada sublista contenha apenas um elemento. A cada divisão, merge_sorting calcula o índice central (mid), particiona o vetor em duas sublistas (left_arr e right_arr), e então chama-se recursivamente para ordenar cada uma dessas metades. Em seguida, as duas sublistas ordenadas (left e right) são combinadas pela função auxiliar merge, que mescla ambas em uma única lista ordenada.
+
+A função merge recebe as duas sublistas (arr_1 e arr_2) e percorre-as utilizando dois índices (i e j). Ela compara os elementos das duas sublistas e adiciona o menor elemento ao vetor de resultado (result) em cada passo, até que todos os elementos de uma das listas sejam adicionados. Depois disso, os elementos restantes da outra sublista são adicionados a result.
+
+A complexidade de tempo do recursive_merge_sort é O(n log n) tanto no caso médio quanto no pior caso, onde n é o número de elementos no vetor. Isso ocorre porque a função divide o vetor repetidamente em duas metades, realizando comparações e mesclagens, cada etapa exigindo O(n) operações.
+
+#### 2.4.3.3 Análise de Resultados
+
+A tabela a seguir mostra os resultados de tempo de execução das implementações da ordenação de mesclagem (mergesort) iterativa e recursiva com vetores de 1000, 10000 e 100000 elementos.
+
+| Tamanho | Mergesort Iterativo | Mergesort Recursivo |
+|:---:|:---:|:---:|
+| 1000 | 463.17µs | 550.43µs |
+| 10000 | 4.14ms | 5.16ms |
+| 100000 | 40.57ms | 49.43ms |
+
+Em todas as situações, a versão iterativa é mais rápida do que a recursiva, e essa diferença se acentua conforme o tamanho do vetor aumenta. Para um vetor de 1000 elementos, o mergesort iterativo leva 463.17 µs, enquanto o recursivo demora 550.43 µs. Com um vetor de 10000 elementos, o iterativo executa em 4.14 ms e o recursivo em 5.16 ms. Já para 100000 elementos, o iterativo leva 40.57 ms, enquanto o recursivo demora 49.43 ms.
+
+Esses resultados indicam que o mergesort iterativo é consistentemente mais eficiente do que o recursivo, principalmente para vetores maiores. Embora ambos possuam complexidade de tempo O(n log n), a implementação recursiva exige mais recursos de memória de pilha devido às chamadas recursivas, o que resulta em maior sobrecarga de execução. Em contraste, a versão iterativa evita essas chamadas e, consequentemente, é mais rápida e eficiente em termos de uso de memória.
+
+Conclui-se que, embora a versão recursiva do mergesort seja conceitualmente mais próxima do design do algoritmo, a versão iterativa oferece desempenho superior, especialmente para grandes conjuntos de dados. Para listas menores, a diferença é menos significativa, mas a versão iterativa ainda se mostra vantajosa em termos de eficiência.
+
+### 2.4.4 Comparação entre Algoritmos
+
+Entre os algoritmos analisados, quicksort e mergesort são muito mais eficientes que o bubble sort, especialmente com vetores maiores. Ambos possuem complexidade O(n log n), o que os torna adequados para grandes conjuntos de dados. O bubble sort, por outro lado, com complexidade O(n²), é viável apenas para listas muito pequenas.
+
+Em todos os algoritmos, as versões iterativas foram consistentemente mais rápidas que as recursivas, principalmente em vetores grandes. As versões recursivas consomem mais memória de pilha e enfrentam sobrecarga de chamada de função, resultando em tempos de execução ligeiramente maiores. Essa diferença é menos visível em vetores menores, mas se intensifica em conjuntos maiores.
+
+Para cenários onde a eficiência e o uso de memória são essenciais, quicksort e mergesort iterativos são as melhores escolhas. O bubble sort, devido à sua ineficiência, deve ser evitado em casos práticos de ordenação de grandes conjuntos de dados.
+
+Dessa forma, os resultados mostram que o quicksort e o mergesort (principalmente as versões iterativas) são altamente eficazes para ordenar grandes vetores, enquanto o bubble sort é impraticável para a maioria dos casos.
 
