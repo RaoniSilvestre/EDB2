@@ -4,7 +4,7 @@
 arvore_t *inserir(arvore_t *arvore, int chave)
 {
     if (arvore == NULL) {
-        arvore = (arvore_t*) malloc(sizeof(arvore_t));
+        arvore = (arvore_t *)malloc(sizeof(arvore_t));
         arvore->chave = chave;
         arvore->esq = NULL;
         arvore->dir = NULL;
@@ -30,15 +30,16 @@ int buscar(arvore_t *arvore, int chave)
     return 0;
 }
 
-arvore_t *remover(arvore_t *arvore, int chave) {
+arvore_t *remover(arvore_t *arvore, int chave)
+{
     if (buscar(arvore, chave)) {
-        
     }
 
     return arvore;
 }
 
-arvore_t *desalocar(arvore_t *arvore) {
+arvore_t *desalocar(arvore_t *arvore)
+{
     if (arvore != NULL) {
         arvore->esq = desalocar(arvore->esq);
         arvore->dir = desalocar(arvore->dir);
