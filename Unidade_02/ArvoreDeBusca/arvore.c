@@ -30,6 +30,14 @@ int buscar(arvore_t *arvore, int chave)
     return 0;
 }
 
+arvore_t *remover(arvore_t *arvore, int chave) {
+    if (buscar(arvore, chave)) {
+        
+    }
+
+    return arvore;
+}
+
 arvore_t *desalocar(arvore_t *arvore) {
     if (arvore != NULL) {
         arvore->esq = desalocar(arvore->esq);
