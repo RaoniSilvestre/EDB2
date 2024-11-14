@@ -10,7 +10,7 @@ arvore_t *inserir(arvore_t *arvore, int chave)
         arvore->dir = NULL;
     } else if (chave < arvore->chave) {
         arvore->esq = inserir(arvore->esq, chave);
-    } else if (chave >= arvore->chave) {
+    } else if (chave > arvore->chave) {
         arvore->dir = inserir(arvore->dir, chave);
     }
     return arvore;
