@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "arvore.h"
 
 int main(int argc, char *argv[]) {
@@ -9,11 +10,12 @@ int main(int argc, char *argv[]) {
     arvre = inserir(arvre, 30);
 
     arvre = inserir(arvre, 50);
-    arvre = inserir(arvre, 10);
+    inorder(arvre);
+    printf("\n");
 
-    printf("chave-raiz: %d, achou: %s\n", arvre->chave, buscar(arvre, 2) ? "sim" : "não");
-    printf("chave-esq: %d, chave-dir: %d", arvre->esq->chave, arvre->dir->chave);
-
+    arvre = remover(arvre, 50);
+    inorder(arvre);
+    printf("\n");
     desalocar(arvre);
 
     return EXIT_SUCCESS;
