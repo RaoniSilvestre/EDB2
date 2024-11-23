@@ -68,11 +68,27 @@ arvore_t *remover(arvore_t *arvore, int chave) {
 }
 
 arvore_t *construir_arvore(int *chaves, int inicio, int fim, arvore_t *arvore) {
-    
+    if (inicio > fim) {
+        return arvore;
+    }
+
+    int meio = (inicio + fim) / 2;
+
+    arvore = inserir(arvore, chaves[meio]);
+
+    arvore = construir_arvore(chaves, inicio, meio + 1, arvore);
+    arvore = construir_arvore(chaves, meio - 1, fim, arvore);
+
+    return arvore;
 }
 
 arvore_t *lista_p_arvore(int *chaves, int tamanho) {
-
+    arvore_t *arvore = NULL;
+    if (tamanho = 0) {
+        return arvore;
+    }
+    arvore = construir_arvore(chaves, 0, tamanho - 1, arvore);
+    return arvore;
 }
 
 arvore_t *desalocar(arvore_t *arvore) {
