@@ -37,6 +37,11 @@ arvore_t *buscar(arvore_t *arvore, int chave) {
     return NULL;
 }
 
+arvore_t *find_min(arvore_t *arvore) {
+    while (arvore->esq != NULL) arvore = arvore->esq;
+    return arvore;
+}
+
 arvore_t *remover(arvore_t *arvore, int chave) {
     if (arvore == NULL) return NULL;
 
@@ -62,9 +67,12 @@ arvore_t *remover(arvore_t *arvore, int chave) {
     return arvore;
 }
 
-arvore_t *find_min(arvore_t *arvore) {
-    while (arvore->esq != NULL) arvore = arvore->esq;
-    return arvore;
+arvore_t *construir_arvore(int *chaves, int inicio, int fim, arvore_t *arvore) {
+    
+}
+
+arvore_t *lista_p_arvore(int *chaves, int tamanho) {
+
 }
 
 arvore_t *desalocar(arvore_t *arvore) {

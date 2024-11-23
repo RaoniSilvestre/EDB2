@@ -5,18 +5,14 @@
 
 int main(int argc, char *argv[]) {
     arvore_t *arvre = NULL;
-    int chave = 10;
+    int chaves[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int tamanho = sizeof(chaves) / sizeof(chaves[0]);
+    
+    arvre = lista_p_arvore(chaves, tamanho);
 
-    arvre = inserir(arvre, 30);
-
-    arvre = inserir(arvre, 50);
     inorder(arvre);
     printf("\n");
-
-    arvre = remover(arvre, 50);
-    inorder(arvre);
-    printf("\n");
-    desalocar(arvre);
+    arvre = desalocar(arvre);
 
     return EXIT_SUCCESS;
 }
