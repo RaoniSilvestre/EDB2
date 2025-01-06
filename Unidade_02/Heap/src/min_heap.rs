@@ -1,12 +1,22 @@
 use std::ops::{Index, IndexMut};
 
+/// # Min Heap
+///
+/// Lista de prioridades, onde a menor prioridade fica na raiz.
 #[derive(Debug, Default)]
 pub struct MinHeap<T> {
     pub data: Vec<T>,
 }
 
 impl<T: Ord> MinHeap<T> {
-    fn bubble_up(&mut self, mut index: usize) {
+    /// # Função Subir
+    ///
+    /// Pegamos a heap(&mut self) e a posição que ira subir como argumentos.
+    /// Devido as propriedades da heap, sabemos que o pai da `self[i]` está na
+    /// posição `i/2`, e dessa forma verificamos se o filho tem prioridade menor que o pai.
+    /// Se for o caso, as posições do filho e do pai são trocadas,
+    /// e então chama-se a função recursivamente na posição do pai.
+    pub fn bubble_up(&mut self, mut index: usize) {
         while index > 0 {
             let parent = (index - 1) / 2;
 
@@ -20,7 +30,15 @@ impl<T: Ord> MinHeap<T> {
         }
     }
 
-    fn bubble_down(&mut self, mut index: usize) {
+    /// # Função Descer
+    ///
+    /// Primeiramente, pegamos a quantidade de elementos na Heap e então fazemos uma iteração.
+    /// Para cada iteração, comparamos a prioridade do index atual com a prioridade de seus filhos,
+    /// caso algum dos filhos seja menor que o pai, realizamos o swap do pai com o filho, e
+    /// repetimos o processo.
+    /// Se nenhum dos filhos é menor que o pai, significa que o item desceu até a posição correta,
+    /// e paramos o loop.
+    pub fn bubble_down(&mut self, mut index: usize) {
         let last_index = match self.len() {
             0 => 0,
             n => n - 1,
@@ -49,7 +67,6 @@ impl<T: Ord> MinHeap<T> {
     }
 }
 
-/// Implementação de inserção e remoção
 impl<T: Ord> MinHeap<T> {
     /// Adiciona o valor ao final da lista e então usa a função subir(bubble_up)
     /// para corrigir a prioridade do novo valor inserido.
@@ -75,7 +92,20 @@ impl<T: Ord> MinHeap<T> {
     }
 }
 
-/// Funções auxiliares
+impl<T: Ord> From<Vec<T>> for MinHeap<T> {
+    /// Transformação de `Vec<T>` em `MinHeap<T>`
+    fn from(data: Vec<T>) -> Self {
+        let mut heap = MinHeap { data };
+        let len = heap.len();
+
+        for i in (0..len / 2).rev() {
+            heap.bubble_down(i);
+        }
+
+        heap
+    }
+}
+
 impl<T> MinHeap<T> {
     /// Busca no topo da MinHeap
     /// Tem que retornar sempre o valor com menor prioridade
