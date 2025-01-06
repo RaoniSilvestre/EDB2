@@ -8,7 +8,7 @@ pub struct MinHeap<T> {
     pub data: Vec<T>,
 }
 
-impl<T: Ord> MinHeap<T> {
+impl<T: PartialOrd> MinHeap<T> {
     /// # Função Subir
     ///
     /// Pegamos a heap(&mut self) e a posição que ira subir como argumentos.
@@ -67,7 +67,7 @@ impl<T: Ord> MinHeap<T> {
     }
 }
 
-impl<T: Ord> MinHeap<T> {
+impl<T: PartialOrd> MinHeap<T> {
     /// Adiciona o valor ao final da lista e então usa a função subir(bubble_up)
     /// para corrigir a prioridade do novo valor inserido.
     pub fn push(&mut self, value: T) {
@@ -92,7 +92,26 @@ impl<T: Ord> MinHeap<T> {
     }
 }
 
-impl<T: Ord> From<Vec<T>> for MinHeap<T> {
+impl<T: PartialOrd> MinHeap<T> {
+    /// Heapsort
+    ///
+    /// Para a ordenação, criamos um vetor mutável com o tamanho da MaxHeap, e como o primeiro elemento
+    /// da MaxHeap é sempre o maior dela, se você retirar repetidamente os valores da heap, você
+    /// terá uma lista ordenada descendente. Quando a MaxHeap é esvaziada, temos uma lista ordenada
+    /// "ao contrário", por isso usamos a função reverse para ordenar de forma ascendente.
+    pub fn heapsort(mut self) -> Vec<T> {
+        let mut sorted = Vec::with_capacity(self.len());
+
+        // Remoção dos elementos da heap.
+        while let Some(max) = self.pop() {
+            sorted.push(max);
+        }
+
+        sorted
+    }
+}
+
+impl<T: PartialOrd> From<Vec<T>> for MinHeap<T> {
     /// Transformação de `Vec<T>` em `MinHeap<T>`
     fn from(data: Vec<T>) -> Self {
         let mut heap = MinHeap { data };

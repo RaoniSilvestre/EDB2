@@ -7,7 +7,7 @@ pub struct MaxHeap<T> {
     data: Vec<T>,
 }
 
-impl<T: Ord> MaxHeap<T> {
+impl<T: PartialOrd> MaxHeap<T> {
     /// # Função Subir
     ///
     /// Pegamos a heap(&mut self) e a posição que ira subir como argumentos.
@@ -65,7 +65,7 @@ impl<T: Ord> MaxHeap<T> {
     }
 }
 
-impl<T: Ord> MaxHeap<T> {
+impl<T: PartialOrd> MaxHeap<T> {
     /// Heapsort
     ///
     /// Para a ordenação, criamos um vetor mutável com o tamanho da MaxHeap, e como o primeiro elemento
@@ -86,7 +86,7 @@ impl<T: Ord> MaxHeap<T> {
     }
 }
 
-impl<T: Ord> From<Vec<T>> for MaxHeap<T> {
+impl<T: PartialOrd> From<Vec<T>> for MaxHeap<T> {
     /// Transformação de `Vec<T>` em `MaxHeap<T>`
     fn from(data: Vec<T>) -> Self {
         let mut heap = MaxHeap { data };
@@ -98,7 +98,7 @@ impl<T: Ord> From<Vec<T>> for MaxHeap<T> {
     }
 }
 
-impl<T: Ord> MaxHeap<T> {
+impl<T: PartialOrd> MaxHeap<T> {
     /// Adiciona o valor ao final da lista e então usa a função subir(bubble_up)
     /// para corrigir a prioridade do novo valor inserido.
     pub fn push(&mut self, value: T) {
