@@ -1,16 +1,18 @@
 use std::ops::{Index, IndexMut};
 
+/// # Max Heap
+/// Lista de prioridades, onde a maior prioridade fica na raiz.
 #[derive(Debug, Default)]
 pub struct MaxHeap<T> {
     data: Vec<T>,
 }
 
-/// Alteração de prioridade do MaxHeap
 impl<T: Ord> MaxHeap<T> {
-    /// Para a função de subir(bubble_up), a implementação é simples.
+    /// # Função Subir
+    ///
     /// Pegamos a heap(&mut self) e a posição que ira subir como argumentos.
-    /// Devido as propriedades da heap, sabemos que o pai da $self[i]$ está na
-    /// posição $i/2$, e dessa forma verificamos se o filho tem prioridade maior que o pai.
+    /// Devido as propriedades da heap, sabemos que o pai da `self[i]` está na
+    /// posição `i/2`, e dessa forma verificamos se o filho tem prioridade maior que o pai.
     /// Se for o caso, as posições do filho e do pai são trocadas,
     /// e então chama-se a função recursivamente na posição do pai.
     pub fn bubble_up(&mut self, mut index: usize) {
@@ -26,14 +28,15 @@ impl<T: Ord> MaxHeap<T> {
         }
     }
 
-    /// Primeiramente, pegamos a quantidade de elementos na Heap e então fazemos uma iteração.
+    /// # Função Descer
     ///
+    /// Primeiramente, pegamos a quantidade de elementos na Heap e então fazemos uma iteração.
     /// Para cada iteração, comparamos a prioridade do index atual com a prioridade de seus filhos,
     /// caso algum dos filhos seja maior que o pai, realizamos o swap do pai com o filho, e
     /// repetimos o processo.
     /// Se nenhum dos filhos é maior que o pai, significa que o item desceu até a posição correta,
     /// e paramos o loop.
-    fn bubble_down(&mut self, mut index: usize) {
+    pub fn bubble_down(&mut self, mut index: usize) {
         let last_index = match self.len() {
             0 => 0,
             n => n - 1,
@@ -62,11 +65,10 @@ impl<T: Ord> MaxHeap<T> {
     }
 }
 
-/// Heapsort
 impl<T: Ord> MaxHeap<T> {
-    /// No heapsort, o que fazemos é consumir a MaxHeap para retornar um Vetor ordenado.
+    /// Heapsort
     ///
-    /// Para isso, criamos um vetor mutável com o tamanho da MaxHeap, e como o primeiro elemento
+    /// Para a ordenação, criamos um vetor mutável com o tamanho da MaxHeap, e como o primeiro elemento
     /// da MaxHeap é sempre o maior dela, se você retirar repetidamente os valores da heap, você
     /// terá uma lista ordenada descendente. Quando a MaxHeap é esvaziada, temos uma lista ordenada
     /// "ao contrário", por isso usamos a função reverse para ordenar de forma ascendente.
@@ -84,8 +86,8 @@ impl<T: Ord> MaxHeap<T> {
     }
 }
 
-/// Transformação de Vec<T> em MaxHeap<T>
-impl<T: Default + Ord> From<Vec<T>> for MaxHeap<T> {
+impl<T: Ord> From<Vec<T>> for MaxHeap<T> {
+    /// Transformação de `Vec<T>` em `MaxHeap<T>`
     fn from(data: Vec<T>) -> Self {
         let mut heap = MaxHeap { data };
         let len = heap.len();
@@ -96,7 +98,6 @@ impl<T: Default + Ord> From<Vec<T>> for MaxHeap<T> {
     }
 }
 
-/// Implementação de inserção e remoção
 impl<T: Ord> MaxHeap<T> {
     /// Adiciona o valor ao final da lista e então usa a função subir(bubble_up)
     /// para corrigir a prioridade do novo valor inserido.
@@ -106,7 +107,8 @@ impl<T: Ord> MaxHeap<T> {
     }
 
     /// Se a lista está vazia, apenas retorna None.
-    /// Se não, troca a posição do último elemento com o primeiro,
+    ///
+    /// Se tem itens na lista, troca a posição do último elemento com o primeiro,
     /// retira o novo último da lista e utiliza a função descer(bubble_down)
     /// no novo primeiro elemento.
     pub fn pop(&mut self) -> Option<T> {
@@ -122,10 +124,9 @@ impl<T: Ord> MaxHeap<T> {
     }
 }
 
-/// Funções auxiliares
 impl<T> MaxHeap<T> {
     /// Busca no topo da MaxHeap
-    /// Tem que retornar sempre o valor com maior prioridade
+    /// Tem que retornar sempre o valor com maior prioridade.
     pub fn peek(&self) -> Option<&T> {
         self.data.get(0)
     }
@@ -150,7 +151,7 @@ impl<T> MaxHeap<T> {
 /// Com essa implementação, é possível fazer uma busca desse modo:
 ///
 /// ```
-/// use rustic_dsa::data_structures::heap::MaxHeap;
+/// use heap::MaxHeap;
 /// use std::ops::Index;
 /// let mut x = MaxHeap::default();
 /// x.push(3);
