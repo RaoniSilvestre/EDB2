@@ -13,6 +13,7 @@ use crate::sorting::OrderedCopy;
 ///
 /// # Exemplo de Uso
 /// ```
+/// use rusty_algoritms::sorting::iterative_merge_sort;
 /// let mut vetor = vec![5, 3, 8, 4, 2];
 /// iterative_merge_sort(&mut vetor);
 /// println!("{:?}", vetor); // Saída: [2, 3, 4, 5, 8]
