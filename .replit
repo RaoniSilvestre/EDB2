@@ -1,0 +1,4 @@
+modules = ["rust-stable", "c-clang14", "lua-5.2"]
+
+[nix]
+channel = "stable-24_05"
