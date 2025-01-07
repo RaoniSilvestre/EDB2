@@ -79,7 +79,7 @@ arvore_rn_t *rotacao_dir(arvore_rn_t *arvore) {
     arvore->esq = nova_raiz->dir;
     nova_raiz->dir = arvore;
     nova_raiz->cor = arvore->cor;
-    
+
     return nova_raiz;
 }
 
@@ -171,4 +171,21 @@ void inorder(arvore_rn_t *arvore) {
         printf("%d ", arvore->chave);
         inorder(arvore->dir);
     }
+}
+
+void imprimir_sub_arvore(arvore_rn_t *arvore, int espaços) {
+    if (arvore != NULL) {
+        espaços += 5;
+        imprimir_sub_arvore(arvore->dir, espaços);
+        printf("\n");
+        for (int i = 5; i < espaços; i++) {
+            prinf(" ");
+        }
+        printf("%d", arvore->chave);
+        imprimir_sub_arvore(arvore->esq, espaços);
+    }
+}
+
+void imprimir_arvore(arvore_rn_t *arvore) {
+    imprimir_sub_arvore(arvore, 0);
 }
