@@ -64,7 +64,7 @@ pub fn bubble_up(&mut self, mut index: usize) {
 
 \vspace{3mm}
 
-\textbf{2. Função subir} 
+\textbf{2. Função descer} 
 
 \vspace{3mm}
 
@@ -106,3 +106,96 @@ pub fn bubble_down(&mut self, mut index: usize) {
 \end{lstlisting}
 
 \subsubsection{Inserção}
+
+Adiciona-se o valor ao final da lista e então usa a função subir(bubble\_up)
+para corrigir a prioridade do novo valor inserido.
+
+\begin{lstlisting}
+pub fn push(&mut self, value: T) {
+    self.data.push(value);
+    self.bubble_up(self.data.len() - 1);
+}
+\end{lstlisting}
+
+\subsubsection{Remoção}
+
+Se a lista está vazia, apenas retorna $None$.
+
+Se não, troca-se a posição do último elemento com o primeiro,
+retira-se o novo último da lista e utiliza-se a função descer(bubble\_down)
+no novo primeiro elemento.
+
+\begin{lstlisting}
+pub fn pop(&mut self) -> Option<T> {
+    if self.is_empty() {
+        return None;
+    }
+
+    let last_index = self.len() - 1;
+    self.swap(0, last_index);
+    let max_value = self.data.pop();
+    self.bubble_down(0);
+    max_value
+}
+\end{lstlisting}
+
+\subsubsection{Construção da MaxHeap}
+
+Para a construção de uma MaxHeap a partir de uma lista,
+foi utilizada a trait (interface/typeclass)
+From\texttt{<}Vec\texttt{<}T\texttt{>}\texttt{>}.
+Essa trait é o método padrão para fazer "mapeamento de tipos",
+ou seja, mapear um tipo A em um tipo B. Nesse caso,
+mapeamos o tipo Vec\texttt{<}T\texttt{>} em MaxHeap\texttt{<}T\texttt{>}.
+
+Quanto ao algoritmo, ele se baseia em considerar que as folhas da heap já
+são heaps. Com isso, temos que a partir da posição $len/2 + 1$, a lista já é uma heap.
+
+Desse modo, só o que falta é organizar a MaxHeap de $0$ até $len/2$. Para isso, usamos
+a função descer(bubble\_down) de $len/2$ até $0$ e então retornamos a heap.
+
+
+\begin{lstlisting}
+impl<T: Default + Ord> From<Vec<T>> for MaxHeap<T> {
+    fn from(data: Vec<T>) -> Self {
+        let mut heap = MaxHeap { data };
+        let len = heap.len();
+        for i in (0..len / 2).rev() {
+            heap.bubble_down(i);
+        }
+        heap
+    }
+}
+\end{lstlisting}
+
+\subsubsection{(Max)Heapsort}
+
+No heapsort, o que fazemos é consumir a MaxHeap para retornar um Vetor ordenado.
+
+Para isso, criamos um vetor mutável com o tamanho da MaxHeap, e como o primeiro elemento
+da MaxHeap é sempre o maior dela, se você retirar repetidamente os valores da heap e inseri-los na lista, você
+terá uma lista ordenada descendente. Quando a MaxHeap é esvaziada, temos uma lista ordenada
+"ao contrário", por isso usamos a função reverse retornar uma lista ordenada ascendente.
+
+\begin{lstlisting}
+pub fn heapsort(mut self) -> Vec<T> {
+    let mut sorted = Vec::with_capacity(self.len());
+    while let Some(max) = self.pop() { sorted.push(max); }
+    sorted.reverse();
+    sorted
+}
+\end{lstlisting}
+
+\subsection{Min Heap}
+
+Em uma Min Heap, a regra a ser seguida é o contrário da Max Heap: Para todo nó,
+o os filhos dele devem ter prioridade MAIOR que ele, ou seja, a prioridade do pai
+é sempre MENOR que seus filhos. 
+Desse modo, a implementação da Min Heap
+é muito similar, a diferença é que é necessário "flipar" as condicionais nas funções de subir
+e descer. 
+
+Além disso, no (min)heapsort, não será necessário fazer um .reverse() na lista, pois os elementos 
+já estarão em ordem crescente devido a propriedade do Min Heap.
+
+\subsection{Comparação de Heapsort}
