@@ -4,18 +4,56 @@
 #include <stdlib.h>
 #include <string.h>
 
-arvore_rn_t *inserir(arvore_rn_t *arvore, int chave) {
+#define VERMELHO(no) (no != NULL && no->cor == RUBRO)
+#define PRETO(no) (no != NULL && no->cor == NEGRO)
+
+void troca_cores(arvore_rn_t *arvore) {
+    arvore->cor = RUBRO;
+    if (arvore->esq != NULL) {
+        arvore->esq->cor = NEGRO;
+    }
+    if (arvore->dir != NULL) {
+        arvore->dir->cor = NEGRO;
+    }
+}
+
+arvore_rn_t *corrigir_ins(arvore_rn_t *arvore) {
+    if (VERMELHO(arvore->esq) && VERMELHO(arvore->dir)) {
+        troca_cores(arvore);
+    }
+
+    if (VERMELHO(arvore->esq) && VERMELHO(arvore->esq->esq)) {
+        arvore = rotacao_dir(arvore);
+    }
+
+    if (PRETO(arvore->esq) && VERMELHO(arvore->dir)) {
+        arvore = rotacao_esq(arvore);
+    }
+
+    return arvore;
+}
+
+arvore_rn_t *inserir_rn(arvore_rn_t *arvore, int chave) {
     if (arvore == NULL) {
         arvore = (arvore_rn_t *)malloc(sizeof(arvore_rn_t));
         arvore->chave = chave;
         arvore->cor = RUBRO;
         arvore->esq = NULL;
         arvore->dir = NULL;
+        return arvore;
     } else if (chave < arvore->chave) {
         arvore->esq = inserir(arvore->esq, chave);
     } else if (chave > arvore->chave) {
         arvore->dir = inserir(arvore->dir, chave);
     }
+
+    arvore = corrigir_ins(arvore);
+    return arvore;
+}
+
+arvore_rn_t *inserir(arvore_rn_t *arvore, int chave) {
+    arvore = inserir_rn(arvore, chave);
+    arvore->cor = NEGRO;
     return arvore;
 }
 
@@ -24,13 +62,12 @@ arvore_rn_t *rotacao_esq(arvore_rn_t *arvore) {
         return arvore;
     }
 
-    arvore_rn_t *nova_arvore = arvore->dir;
-    arvore_rn_t *subarvore_dir = nova_arvore->esq;
+    arvore_rn_t *nova_raiz = arvore->dir;
+    arvore->dir = nova_raiz->esq;
+    nova_raiz->esq = arvore;
+    nova_raiz->cor = arvore->cor;
 
-    nova_arvore->esq = arvore;
-    arvore->dir = subarvore_dir;
-
-    return arvore;
+    return nova_raiz;
 }
 
 arvore_rn_t *rotacao_dir(arvore_rn_t *arvore) {
@@ -38,13 +75,12 @@ arvore_rn_t *rotacao_dir(arvore_rn_t *arvore) {
         return arvore;
     }
 
-    arvore_rn_t *nova_arvore = arvore->esq;
-    arvore_rn_t *subarvore_esq = nova_arvore->dir;
-
-    nova_arvore->dir = arvore;
-    arvore->esq = subarvore_esq;
-
-    return arvore;
+    arvore_rn_t *nova_raiz = arvore->esq;
+    arvore->esq = nova_raiz->dir;
+    nova_raiz->dir = arvore;
+    nova_raiz->cor = arvore->cor;
+    
+    return nova_raiz;
 }
 
 arvore_rn_t *buscar(arvore_rn_t *arvore, int chave) {
