@@ -1,0 +1,243 @@
+\section{Árvore AVL}
+
+Esta seção apresenta a implementação completa de uma Árvore AVL, esta a seguir, desenvolvida na linguagem C,
+incluindo suas principais operações: inserção, remoção, balanceamento, busca. 
+Além disso, para fins de visualização, também foi implementada uma funcionalidade de exportação para formato DOT.
+A Árvore AVL é uma árvore binária de busca auto-balanceada que garante operações eficientes, como inserções e buscas, mantendo a complexidade \(O(\log n)\).
+
+\subsection{Estrutura de Dados}
+
+A estrutura de dados da Árvore AVL (\texttt{arvore\_avl}) é definida com os seguintes atributos:
+
+\begin{verbatim}
+typedef struct arvore_avl {
+    int valor;                // Valor armazenado no nó
+    int altura_esq;           // Altura da subárvore esquerda
+    int altura_dir;           // Altura da subárvore direita
+    struct arvore_avl *esq;   // Ponteiro para o filho esquerdo
+    struct arvore_avl *dir;   // Ponteiro para o filho direito
+} arvore_avl;
+\end{verbatim}
+
+O campo \texttt{valor} armazena o dado do nó, enquanto \texttt{altura\_esq} e \texttt{altura\_dir} mantêm a altura de cada subárvore. 
+Isso facilita o balanceamento da árvore, que é realizado após cada inserção ou remoção.
+
+\subsection{Funções Principais da Árvore AVL}
+
+\subsubsection{Cálculo da Altura}
+
+A função \texttt{calcular\_altura} retorna a altura da subárvore. Caso o nó seja nulo (\texttt{NULL}), a altura será considerada 0. 
+Este cálculo é essencial para determinar se a árvore precisa de balanceamento.
+
+\begin{verbatim}
+int calcular_altura(arvore_avl *arv) {
+    if (arv == NULL) {
+        return 0;
+    }
+    int altura_esq = calcular_altura(arv->esq);
+    int altura_dir = calcular_altura(arv->dir);
+    return (altura_esq > altura_dir ? altura_esq : altura_dir) + 1;
+}
+\end{verbatim}
+
+\subsubsection{Criação de um Novo Nó}
+
+A função \texttt{criar\_novo\_no} aloca memória para um novo nó da árvore e inicializa seus campos.
+
+\begin{verbatim}
+arvore_avl *criar_novo_no(int valor) {
+    arvore_avl *novo_no = (arvore_avl *)malloc(sizeof(arvore_avl));
+    if (novo_no == NULL) {
+        fprintf(stderr, "Erro ao alocar memória para o nó.\n");
+        exit(1);
+    }
+    novo_no->valor = valor;
+    novo_no->altura_esq = 0;
+    novo_no->altura_dir = 0;
+    novo_no->esq = NULL;
+    novo_no->dir = NULL;
+    return novo_no;
+}
+\end{verbatim}
+
+\subsubsection{Rotações de Balanceamento}
+
+O balanceamento da Árvore AVL é garantido por meio de rotações,
+que reorganizam os nós para manter a diferença de altura entre as subárvores esquerda e direita dentro do limite de 1.
+
+\paragraph{Rotação à Esquerda}  
+A rotação à esquerda reorganiza os nós em torno do filho direito do nó desbalanceado.
+
+\begin{verbatim}
+arvore_avl *rotacao_esquerda(arvore_avl *raiz) {
+    if (raiz == NULL || raiz->dir == NULL) {
+        return raiz;
+    }
+      
+    arvore_avl *novo_raiz = raiz->dir;
+    arvore_avl *subarvore_dir = novo_raiz->esq;
+      
+    novo_raiz->esq = raiz;
+    raiz->dir = subarvore_dir;
+      
+    raiz->altura_esq = calcular_altura(raiz->esq);
+    raiz->altura_dir = calcular_altura(raiz->dir);
+      
+    novo_raiz->altura_esq = calcular_altura(novo_raiz->esq);
+    novo_raiz->altura_dir = calcular_altura(novo_raiz->dir);
+      
+    return novo_raiz;
+}
+\end{verbatim}
+
+\paragraph{Rotação à Direita}  
+A rotação à direita é o análogo da rotação à esquerda, mas reorganiza os nós em torno do filho esquerdo.
+
+\begin{verbatim}
+arvore_avl *rotacao_direita(arvore_avl *raiz) {
+    if (raiz == NULL || raiz->esq == NULL) {
+        return raiz;
+    }
+      
+    arvore_avl *novo_raiz = raiz->esq;
+    arvore_avl *subarvore_esq = novo_raiz->dir;
+      
+    novo_raiz->dir = raiz;
+    raiz->esq = subarvore_esq;
+      
+    raiz->altura_esq = calcular_altura(raiz->esq);
+    raiz->altura_dir = calcular_altura(raiz->dir);
+      
+    novo_raiz->altura_esq = calcular_altura(novo_raiz->esq);
+    novo_raiz->altura_dir = calcular_altura(novo_raiz->dir);
+      
+    return novo_raiz;
+}
+\end{verbatim}
+
+\subsubsection{Inserção de um Nó}
+
+A função \texttt{inserir\_no} insere um valor na árvore de maneira recursiva. Após cada inserção, a árvore é balanceada.
+
+\begin{verbatim}
+arvore_avl *inserir_no(arvore_avl *raiz, int valor) {
+    arvore_avl *novo_no;
+      
+    if (raiz == NULL) {
+        return criar_novo_no(valor);
+    }
+      
+    if (valor < raiz->valor) {
+        raiz->esq = inserir_no(raiz->esq, valor); 
+    } else if (valor > raiz->valor) {
+        raiz->dir = inserir_no(raiz->dir, valor); 
+    }
+      
+    raiz->altura_esq = calcular_altura(raiz->esq);
+    raiz->altura_dir = calcular_altura(raiz->dir);
+      
+      
+    raiz = balancear_arvore(raiz);
+    return raiz;
+}
+\end{verbatim}
+
+\subsubsection{Remoção de um Nó}
+
+A função \texttt{remover\_no} remove um valor da árvore e a rebalanceia, quando necessário.
+
+\begin{verbatim}
+arvore_avl *remover_no(arvore_avl *raiz, int valor) {
+    if (raiz == NULL) {
+        return NULL;
+    }
+      
+    if (valor < raiz->valor) {
+        raiz->esq = remover_no(raiz->esq, valor);
+    } else if (valor > raiz->valor) {
+        raiz->dir = remover_no(raiz->dir, valor);
+    } else {
+        if (raiz->esq == NULL && raiz->dir == NULL) {
+        free(raiz);
+        return NULL;
+        } else if (raiz->esq == NULL) {
+        arvore_avl *aux = raiz->dir;
+        free(raiz);
+        return aux;
+        } else if (raiz->dir == NULL) {
+        arvore_avl *aux = raiz->esq;
+        free(raiz);
+        return aux;
+        } else {
+        arvore_avl *aux = raiz->dir;
+        while (aux->esq != NULL) {
+            aux = aux->esq;
+        }
+        raiz->valor = aux->valor;
+        raiz->dir = remover_no(raiz->dir, aux->valor);
+        }
+    }
+      
+    raiz->altura_esq = calcular_altura(raiz->esq);
+    raiz->altura_dir = calcular_altura(raiz->dir);
+  
+    return balancear_arvore(raiz);
+}
+\end{verbatim}
+
+\subsubsection{Busca em uma Árvore AVL}
+
+A função \texttt{buscar} localiza um valor na árvore. Caso o valor não seja encontrado, retorna \texttt{NULL}.
+
+\begin{verbatim}
+arvore_avl *buscar(arvore_avl *raiz, int valor) {
+
+    if (raiz == NULL) {
+      return 0;
+    }
+  
+    if (valor < raiz->valor) {
+      return buscar(raiz->esq, valor);
+    }
+  
+    if (valor > raiz->valor) {
+      return buscar(raiz->dir, valor);
+    }
+  
+    if (valor == raiz->valor) {
+      return raiz;
+    }
+    return NULL;
+}
+\end{verbatim}
+
+\subsubsection{Exportação para DOT}
+
+A função \texttt{exportar\_para\_dot}, em conjunto com a função \texttt{gerar\_dot}, gera um arquivo no formato DOT, possibilitando a visualização da árvore em ferramentas gráficas.
+Embora essa funcionalidade não seja uma característica intrínseca de uma Árvore AVL,
+foi incluída neste código para tornar sua análise mais acessível e intuitiva, facilitando a compreensão de sua estrutura e funcionamento.
+
+\begin{verbatim}
+void exportar_para_dot(arvore_avl *raiz, const char *nome_arquivo) {
+    FILE *arquivo = fopen(nome_arquivo, "w");
+    if (arquivo == NULL) {
+        fprintf(stderr, "Erro ao abrir o arquivo %s\n", nome_arquivo);
+        exit(1);
+    }
+
+    fprintf(arquivo, "digraph G {\n");
+    gerar_dot(arquivo, raiz);
+    fprintf(arquivo, "}\n");
+    fclose(arquivo);
+}
+\end{verbatim}
+
+
+\subsection{Conclusão sobre a arvore AVL}
+
+A Árvore AVL é uma estrutura de dados solida e eficiente para manipulação de informações. 
+Ela assegura que as operações de busca, inserção e remoção sejam realizadas em tempo 
+O(logn), graças ao balanceamento automático proporcionado pelos cálculos de altura e rotações. 
+Essa característica permite que a árvore permaneça equilibrada, independentemente da ordem em que os nós são inseridos ou removidos. 
+Por sua eficiência, as Árvores AVL têm ampla aplicação em sistemas que exigem alto desempenho,
+como bancos de dados, sistemas de arquivos e em outras diversas áreas da computação.
