@@ -1,10 +1,8 @@
 use std::{fmt::Display, fs::File, io::Write, path::Path, time::Instant};
 
 use crate::sorting::{
-    bubble::{iterative::iterative_bubble_sort, recursive::recursive_bubble_sort},
-    merge::{iterative::iterative_merge_sort, recursive::recursive_merge_sort},
-    quick::{iterative::iterative_quick_sort, recursive::recursive_quick_sort},
-    OrderedCopy,
+    iterative_bubble_sort, iterative_merge_sort, iterative_quick_sort, max_heap_sort,
+    min_heap_sort, recursive_bubble_sort, recursive_merge_sort, recursive_quick_sort, OrderedCopy,
 };
 
 type SortFunction<T> = fn(&mut Vec<T>);
@@ -30,7 +28,10 @@ type SortFunction<T> = fn(&mut Vec<T>);
 ///
 /// # Exemplo
 /// ```
-/// run(vec![3, 1, 4, 1, 5], some_sort_function, String::from("SORT_NAME"));
+/// use rusty_algoritms::running::run;
+/// use rusty_algoritms::sorting::recursive_quick_sort;
+///
+/// run(vec![3, 1, 4, 1, 5], recursive_quick_sort, String::from("SORT_NAME"));
 /// ```
 pub fn run<T, F>(mut array: Vec<T>, mut sort_function: F, function_name: String)
 where
@@ -67,6 +68,7 @@ where
 ///
 /// # Exemplo
 /// ```
+/// use rusty_algoritms::running::run_array;
 /// run_array(vec![10, 7, 3, 2, 1]);
 /// ```
 ///
@@ -80,6 +82,8 @@ pub fn run_array(array: Vec<i32>) {
         ("ITERATIVE_MERGESORT", iterative_merge_sort),
         ("RECURSIVE_BUBBLESORT", recursive_bubble_sort),
         ("ITERATIVE_BUBBLESORT", iterative_bubble_sort),
+        ("MAX_HEAPSORT", max_heap_sort),
+        ("MIN_HEAPSORT", min_heap_sort),
     ];
 
     println!("---------------------------\n");
