@@ -1,98 +1,124 @@
 #include "arvore_rn.h"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define VERMELHO(no) (no != NULL && no->cor == RUBRO)
 #define PRETO(no) (no != NULL && no->cor == NEGRO)
 
-void rotacao_esq(arvore_rn_t **raiz, arvore_rn_t *temp) {
-    arvore_rn_t *direita = temp->dir;
+arvore_rn_t *raiz = NULL;
 
-    // Atualiza a subárvore esquerda do nó à direita
-    temp->dir = direita->esq;
-    if (temp->dir != NULL) {
-        temp->dir->pai = temp;
-    }
+void rotacao_esq(arvore_rn_t *x) {
+    arvore_rn_t *y = x->dir;
+    x->dir = y->esq;
+    if (y->esq != NULL)
+        y->esq->pai = x;
 
-    // Atualiza o pai do nó à direita
-    direita->pai = temp->pai;
-    if (temp->pai == NULL) {
-        // Se não há pai, a nova raiz é o nó à direita
-        *raiz = direita;
-    } else if (temp == temp->pai->esq) {
-        // Atualiza o filho esquerdo do pai
-        temp->pai->esq = direita;
-    } else {
-        // Atualiza o filho direito do pai
-        temp->pai->dir = direita;
-    }
+    y->pai = x->pai;
+    if (x->pai == NULL)
+        raiz = y;
+    else if (x == x->pai->esq)
+        x->pai->esq = y;
+    else
+        x->pai->dir = y;
 
-    // Atualiza as relações entre o nó atual e o nó à direita
-    direita->esq = temp;
-    temp->pai = direita;
+    y->esq = x;
+    x->pai = y;
 }
 
-void rotacao_dir(arvore_rn_t **raiz, arvore_rn_t *temp) {
-    arvore_rn_t *esquerda = temp->esq;
+void rotacao_dir(arvore_rn_t *x) {
+    arvore_rn_t *y = x->esq;
+    x->esq = y->dir;
+    if (y->dir != NULL)
+        y->dir->pai = x;
 
-    // Atualiza a subárvore direita do nó à esquerda
-    temp->esq = esquerda->dir;
-    if (temp->esq != NULL) {
-        temp->esq->pai = temp;
-    }
+    y->pai = x->pai;
+    if (x->pai == NULL)
+        raiz = y;
+    else if (x == x->pai->dir)
+        x->pai->dir = y;
+    else
+        x->pai->esq = y;
 
-    // Atualiza o pai do nó à esquerda
-    esquerda->pai = temp->pai;
-    if (temp->pai == NULL) {
-        // Se não há pai, a nova raiz é o nó à esquerda
-        *raiz = esquerda;
-    } else if (temp == temp->pai->esq) {
-        // Atualiza o filho esquerdo do pai
-        temp->pai->esq = esquerda;
-    } else {
-        // Atualiza o filho direito do pai
-        temp->pai->dir = esquerda;
-    }
-
-    // Atualiza as relações entre o nó atual e o nó à esquerda
-    esquerda->dir = temp;
-    temp->pai = esquerda;
+    y->dir = x;
+    x->pai = y;
 }
 
-arvore_rn_t *corrigir_ins(arvore_rn_t *arvore) {
-    if (arvore->esq == NULL && arvore->dir == NULL && arvore->pai == NULL) {
-        arvore->cor = NEGRO;
+void corrigir_balanceamento(arvore_rn_t *no) {
+    arvore_rn_t *pai = NULL;
+    arvore_rn_t *avo = NULL;
+
+    while (no != raiz && no->cor == RUBRO && no->pai->cor == RUBRO) {
+        pai = no->pai;
+        avo = pai->pai;
+
+        if (pai == avo->esq) {
+            arvore_rn_t *tio = avo->dir;
+
+            if (tio != NULL && tio->cor == RUBRO) {
+                avo->cor = RUBRO;
+                pai->cor = NEGRO;
+                tio->cor = NEGRO;
+                no = avo;
+            } else {
+                if (no == pai->dir) {
+                    rotacao_esq(pai);
+                    no = pai;
+                    pai = no->pai;
+                }
+                rotacao_dir(avo);
+                cor_t temp = pai->cor;
+                pai->cor = avo->cor;
+                avo->cor = temp;
+                no = pai;
+            }
+        } else {
+            arvore_rn_t *tio = avo->esq;
+
+            if (tio != NULL && tio->cor == RUBRO) {
+                avo->cor = RUBRO;
+                pai->cor = NEGRO;
+                tio->cor = NEGRO;
+                no = avo;
+            } else {
+                if (no == pai->esq) {
+                    rotacao_dir(pai);
+                    no = pai;
+                    pai = no->pai;
+                }
+                rotacao_esq(avo);
+                cor_t temp = pai->cor;
+                pai->cor = avo->cor;
+                avo->cor = temp;
+                no = pai;
+            }
+        }
     }
-    // XXX Faltam mais casos!!
-    return arvore;
+
+    raiz->cor = NEGRO;
 }
 
-arvore_rn_t *inserir_rn(arvore_rn_t *arvore, int chave) {
+arvore_rn_t *inserir(arvore_rn_t *arvore, arvore_rn_t *no) {
     if (arvore == NULL) {
-        arvore = (arvore_rn_t *)malloc(sizeof(arvore_rn_t));
-        arvore->chave = chave;
-        arvore->esq = NULL;
-        arvore->dir = NULL;
-        arvore->pai = NULL;
-        return arvore;
-    } else if (chave < arvore->chave) {
-        arvore->esq = inserir_rn(arvore->esq, chave);
+        return no;
+    } else if (no->chave < arvore->chave) {
+        arvore->esq = inserir(arvore->esq, no);
         arvore->esq->pai = arvore;
-    } else if (chave > arvore->chave) {
-        arvore->dir = inserir_rn(arvore->dir, chave);
+    } else if (no->chave > arvore->chave) {
+        arvore->dir = inserir(arvore->dir, no);
         arvore->dir->pai = arvore;
     }
 
     return arvore;
 }
 
-arvore_rn_t *inserir(arvore_rn_t *arvore, int chave) {
-    arvore = inserir_rn(arvore, chave);
-    arvore = corrigir_ins(arvore);
-    arvore->cor = NEGRO;
-    return arvore;
+arvore_rn_t *criar_no(int chave) {
+    arvore_rn_t *novo_no = (arvore_rn_t *)malloc(sizeof(arvore_rn_t));
+    novo_no->chave = chave;
+    novo_no->cor = RUBRO; // Nós recém-criados são rubros
+    novo_no->pai = NULL;
+    novo_no->esq = NULL;
+    novo_no->dir = NULL;
+    return novo_no;
 }
 
 arvore_rn_t *buscar(arvore_rn_t *arvore, int chave) {
@@ -151,7 +177,7 @@ arvore_rn_t *construir_arvore(int *chaves, int inicio, int fim, arvore_rn_t *arv
 
     int meio = (inicio + fim) / 2;
 
-    arvore = inserir(arvore, chaves[meio]);
+    // arvore = inserir(arvore, chaves[meio]);
 
     // XXX Dá SegFault!!!
     arvore = construir_arvore(chaves, inicio, meio + 1, arvore);
@@ -161,12 +187,15 @@ arvore_rn_t *construir_arvore(int *chaves, int inicio, int fim, arvore_rn_t *arv
 }
 
 arvore_rn_t *lista_p_arvore(int *chaves, int tamanho) {
-    arvore_rn_t *arvore = NULL;
+    arvore_rn_t *raiz = NULL;
     if (tamanho == 0) {
-        return arvore;
+        return raiz;
     }
-    arvore = construir_arvore(chaves, 0, tamanho - 1, arvore);
-    return arvore;
+    for (int i = 0; i < tamanho; i++) {
+        
+    }
+    raiz->cor = NEGRO;
+    return raiz;
 }
 
 arvore_rn_t *desalocar(arvore_rn_t *arvore) {
