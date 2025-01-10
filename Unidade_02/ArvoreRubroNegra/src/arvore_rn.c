@@ -170,31 +170,12 @@ arvore_rn_t *remover(arvore_rn_t *arvore, int chave) {
     return arvore;
 }
 
-arvore_rn_t *construir_arvore(int *chaves, int inicio, int fim, arvore_rn_t *arvore) {
-    if (inicio > fim) {
-        return arvore;
-    }
-
-    int meio = (inicio + fim) / 2;
-
-    // arvore = inserir(arvore, chaves[meio]);
-
-    // XXX Dá SegFault!!!
-    arvore = construir_arvore(chaves, inicio, meio + 1, arvore);
-    arvore = construir_arvore(chaves, meio - 1, fim, arvore);
-
-    return arvore;
-}
-
 arvore_rn_t *lista_p_arvore(int *chaves, int tamanho) {
-    arvore_rn_t *raiz = NULL;
-    if (tamanho == 0) {
-        return raiz;
-    }
     for (int i = 0; i < tamanho; i++) {
-        
+        arvore_rn_t *novo_no = criar_no(chaves[i]);
+        raiz = inserir(raiz, novo_no);
+        corrigir_balanceamento(novo_no);
     }
-    raiz->cor = NEGRO;
     return raiz;
 }
 
@@ -224,9 +205,9 @@ void imprimir_sub_arvore(arvore_rn_t *arvore, int espaços) {
             printf(" ");
         }
         if (VERMELHO(arvore)) {
-            printf("\e[0;31m");
+            printf("\e[0;41m");
         } else if (PRETO(arvore)) {
-            printf("\e[0;30m");
+            printf("\e[0;40m");
         }
         printf("%d\e[0m", arvore->chave);
         imprimir_sub_arvore(arvore->esq, espaços);
@@ -234,5 +215,6 @@ void imprimir_sub_arvore(arvore_rn_t *arvore, int espaços) {
 }
 
 void imprimir_arvore(arvore_rn_t *arvore) {
+    printf("Visualização da árvore deitada:\n");
     imprimir_sub_arvore(arvore, 0);
 }
