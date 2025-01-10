@@ -15,11 +15,11 @@ A estrutura de dados da Árvore AVL (\texttt{arvore\_avl}) é definida com os se
 
 \begin{lstlisting}
 typedef struct arvore_avl {
-    int valor;                // Valor armazenado no nó
-    int altura_esq;           // Altura da subárvore esquerda
-    int altura_dir;           // Altura da subárvore direita
-    struct arvore_avl *esq;   // Ponteiro para o filho esquerdo
-    struct arvore_avl *dir;   // Ponteiro para o filho direito
+    int valor;                
+    int altura_esq;           
+    int altura_dir;           
+    struct arvore_avl *esq;   
+    struct arvore_avl *dir;   
 } arvore_avl;
 \end{lstlisting}
 
@@ -58,11 +58,11 @@ int calcular_altura(arvore_avl *arv) {
 
 A função \texttt{criar\_novo\_no} aloca memória para um novo nó da árvore e inicializa seus campos.
 
-\begin{lstlisting}
+\begin{lstlisting}[language=C]
 arvore_avl *criar_novo_no(int valor) {
     arvore_avl *novo_no = (arvore_avl *)malloc(sizeof(arvore_avl));
     if (novo_no == NULL) {
-        fprintf(stderr, "Erro ao alocar memória para o nó.\n");
+        fprintf(stderr, "Erro ao alocar memoria para o no.\n");
         exit(1);
     }
     novo_no->valor = valor;
@@ -86,7 +86,7 @@ que reorganizam os nós para manter a diferença de altura entre as subárvores 
 \paragraph{Rotação à Esquerda}  
 A rotação à esquerda reorganiza os nós em torno do filho direito do nó desbalanceado.
 
-\begin{lstlisting}
+\begin{lstlisting}[language=C]
 arvore_avl *rotacao_esquerda(arvore_avl *raiz) {
     if (raiz == NULL || raiz->dir == NULL) {
         return raiz;
@@ -111,7 +111,7 @@ arvore_avl *rotacao_esquerda(arvore_avl *raiz) {
 \paragraph{Rotação à Direita}  
 A rotação à direita é o análogo da rotação à esquerda, mas reorganiza os nós em torno do filho esquerdo.
 
-\begin{lstlisting}
+\begin{lstlisting}[]
 arvore_avl *rotacao_direita(arvore_avl *raiz) {
     if (raiz == NULL || raiz->esq == NULL) {
         return raiz;
@@ -170,9 +170,10 @@ arvore_avl *inserir_no(arvore_avl *raiz, int valor) {
 
 \vspace{3mm}
 
-A função \texttt{remover\_no} remove um valor da árvore e a rebalanceia, quando necessário.
+A função \texttt{remover\_no} remove um valor da árvore 
+e a rebalanceia, quando necessário.
 
-\begin{lstlisting}
+\begin{lstlisting}[language=C]
 arvore_avl *remover_no(arvore_avl *raiz, int valor) {
     if (raiz == NULL) {
         return NULL;
