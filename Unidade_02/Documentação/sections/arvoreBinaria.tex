@@ -1,0 +1,214 @@
+\section{Árvore Binária}
+
+A implementação da estrutura de árvore binária foi feita em C devido ao controle preciso de memória e à utilização eficiente de ponteiros, características essenciais dessa linguagem. 
+
+\subsection{Definição}
+
+Uma árvore binária é uma estrutura de dados composta por um conjunto finito de elementos, chamados de nós, sendo que o primeiro nó, denominado raiz, é o ponto inicial da árvore e o os nós da base são conhecidos como folhas. Em uma árvore binária, cada nó pode ter no máximo dois filhos, um à esquerda e outro à direita.
+
+A árvore binária tem a propriedade de que todos os nós de uma subárvore à direita de um nó são maiores do que o valor armazenado na raiz desse nó, enquanto todos os nós de uma subárvore à esquerda de um nó são menores do que o valor armazenado na raiz desse nó. Além disso, cada subárvore, formada pelos filhos à esquerda e à direita de qualquer nó, é também uma árvore binária por si mesma. Isso torna a estrutura recursiva, em que cada nó pode ser considerado a raiz de uma nova árvore binária.
+
+Essa organização permite operações eficientes de busca, inserção e remoção, com a garantia de que a árvore estará estruturada de forma hierárquica e balanceada.
+
+\subsection{Estrutura}
+
+Na implementação da árvore binária, utilizamos uma estrutura do tipo struct para representar os nós da árvore. Cada nó contém três componentes principais: um valor, representado pela chave, e dois ponteiros, um para a subárvore à esquerda e outro para a subárvore à direita. A seguir, temos a definição da estrutura:
+
+\vspace{3mm}
+
+\begin{lstlisting}
+typedef struct arvore_t {
+  int chave;
+  struct arvore_t *esq;
+  struct arvore_t *dir;
+} arvore_t;
+\end{lstlisting}
+
+\vspace{3mm}
+
+\subsection{Operações de Manipulação}
+
+\subsubsection{Inserção}
+
+Na operação de inserção em uma árvore binária, é fundamental que as propriedades da árvore sejam preservadas. Isso significa que todos os nós da subárvore à esquerda de um nó devem conter valores menores que a chave desse nó, e todos os nós da subárvore à direita devem conter valores maiores. Além disso, todo novo nó inserido na árvore sempre será uma folha, ou seja, não possuirá filhos imediatamente após sua criação.
+
+A seguir, apresentamos o código que implementa essa operação:
+
+\vspace{3mm}
+
+\begin{lstlisting}
+arvore_t *inserir(arvore_t *arvore, int chave) {
+  if (arvore == NULL) {
+    arvore = (arvore_t *)malloc(sizeof(arvore_t));
+    arvore->chave = chave;
+    arvore->esq = NULL;
+    arvore->dir = NULL;
+  } else if (chave < arvore->chave) {
+    arvore->esq = inserir(arvore->esq, chave);
+  } else if (chave > arvore->chave) {
+    arvore->dir = inserir(arvore->dir, chave);
+  }
+  return arvore;
+}
+\end{lstlisting}
+
+\subsubsection{Criação de Árvore a partir de uma Lista}
+
+Para construir uma árvore binária a partir de uma lista, de forma que ela fique balanceada ou aproximadamente balanceada, foi adotada a seguinte estratégia:
+
+\begin{enumerate}[label=\textbf{Etapa \arabic*:}]
+    \item Início.
+    \item Verifica se o tamanho da lista é 0.
+          \begin{itemize}
+              \item Se sim, retorna \texttt{NULL}.
+              \item Caso contrário, chama a função \texttt{construir\_arvore}.
+          \end{itemize}
+    \item Calcula o índice do meio.
+    \item Insere a chave central na árvore.
+    \item Chama recursivamente:
+          \begin{itemize}
+              \item Subárvore esquerda: \texttt{construir\_arvore(chaves, inicio, meio-1, arvore)}.
+              \item Subárvore direita: \texttt{construir\_arvore(chaves, meio+1, fim, arvore)}.
+          \end{itemize}
+    \item Retorna a árvore construída.
+    \item Finaliza liberando memória.
+\end{enumerate}
+
+O código a seguir implementa essa abordagem:
+
+\begin{lstlisting}
+arvore_t *construir_arvore(int *chaves, int inicio, int fim, arvore_t *arvore) {
+  if (inicio > fim) {
+    return arvore;
+  }
+  int meio = (inicio + fim) / 2;
+  arvore = inserir(arvore, chaves[meio]);
+  arvore = construir_arvore(chaves, inicio, meio - 1, arvore); // Lado esquerdo
+  arvore = construir_arvore(chaves, meio + 1, fim, arvore);    // Lado direito
+  return arvore;
+}
+arvore_t *lista_p_arvore(int *chaves, int tamanho) {
+  arvore_t *arvore = NULL;
+  if (tamanho == 0) {
+    return arvore;
+  }
+  arvore = construir_arvore(chaves, 0, tamanho - 1, arvore);
+  return arvore;
+}
+\end{lstlisting}
+
+\subsubsection{Remoção}
+
+O processo de remoção considera três casos principais: o nó a ser removido não possui filhos, possui apenas um filho ou possui dois filhos. Quando o nó possui dois filhos, o menor elemento da subárvore direita (ou o maior da subárvore esquerda) substitui o nó removido, mantendo a organização da árvore. Para isso, utilizamos um nó auxiliar.
+
+A seguir, apresentamos a implementação da operação de remoção:
+
+\vspace{3mm}
+
+\begin{lstlisting}
+arvore_t *remover(arvore_t *arvore, int chave) {
+  if (arvore == NULL)
+    return NULL;
+  if (chave < arvore->chave) {
+    arvore->esq = remover(arvore->esq, chave);
+  } else if (chave > arvore->chave) {
+    arvore->dir = remover(arvore->dir, chave);
+  } else {
+    if (arvore->esq == NULL) {
+      arvore_t *temp = arvore->dir;
+      free(arvore);
+      return temp;
+    } else if (arvore->dir == NULL) {
+      arvore_t *temp = arvore->esq;
+      free(arvore);
+      return temp;
+    }
+    arvore_t *rightMin = find_min(arvore->dir);
+    arvore->chave = rightMin->chave;
+    arvore->dir = remover(arvore->dir, rightMin->chave);
+  }
+  return arvore;
+}
+\end{lstlisting}
+
+\subsection{Operações de Consulta}
+
+\subsubsection{Busca}
+
+Na operação de busca em uma árvore binária, o valor procurado é comparado recursivamente com a chave do nó atual, começando pela raiz. Se o valor for menor que a chave, a busca continua na subárvore à esquerda; se for maior, prossegue na subárvore à direita. Esse processo se repete até que o valor seja encontrado ou até alcançar uma folha (nó nulo), indicando que o valor não está presente na árvore.
+
+A implementação da busca é apresentada a seguir:
+
+\vspace{3mm}
+
+\begin{lstlisting}
+arvore_t *buscar(arvore_t *arvore, int chave) {
+  if (arvore == NULL) {
+    return 0;
+  }
+  if (chave < arvore->chave) {
+    return buscar(arvore->esq, chave);
+  }
+  if (chave > arvore->chave) {
+    return buscar(arvore->dir, chave);
+  }
+  if (chave == arvore->chave) {
+    return arvore;
+  }
+  return NULL;
+}
+\end{lstlisting}
+
+\subsubsection{Consulta Em Ordem}
+
+Na consulta em ordem, os nós da árvore binária são visitados seguindo a sequência: filho da esquerda, raiz e, por fim, filho da direita. Esse tipo de travessia resulta em uma listagem dos elementos em ordem crescente, caso a árvore seja uma árvore binária de busca.
+
+\begin{lstlisting}
+void mostrarEmOrdem(arvore_t *arvore) {
+  if (arvore != NULL) {
+    mostrarEmOrdem(arvore->esq);
+    printf("  %d", arvore->chave);
+    mostrarEmOrdem(arvore->dir);
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Consulta Em Pré Ordem}
+
+Na consulta em pré-ordem, os nós são visitados na seguinte sequência: raiz, filho da esquerda e filho da direita. Esse método é frequentemente utilizado para gerar uma cópia da árvore ou para fins de visualização estrutural.
+
+\begin{lstlisting}
+void mostrarEmOrdem(arvore_t *arvore) {
+  if (arvore != NULL) {
+    mostrarEmOrdem(arvore->esq);
+    printf("  %d", arvore->chave);
+    mostrarEmOrdem(arvore->dir);
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Consulta Em Pós Ordem}
+
+Na consulta em pós-ordem, a visita aos nós segue a ordem: filho da esquerda, filho da direita e, por último, a raiz. Esse tipo de travessia é útil em operações que envolvem a remoção ou processamento dos nós em uma sequência de base para topo (por exemplo, liberar memória ou avaliar expressões em árvores de sintaxe).
+
+\begin{lstlisting}
+void mostrarPosOrdem(arvore_t *arvore) {
+  if (arvore != NULL) {
+    mostrarPosOrdem(arvore->esq);
+    mostrarPosOrdem(arvore->dir);
+    printf("  %d", arvore->chave);
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Consulta Em Nível}
+
+Para realizar uma consulta em nível, ou seja, visitar os nós da árvore da raiz até as folhas, seguindo uma ordem horizontal (nível por nível), é possível utilizar ferramentas gráficas que convertem arquivos no formato DOT para imagens, como arquivos PNG. Esse proceso permite obter a seguinte visualização da árvore:
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.3\textwidth]{imagens/arvore_de_busca0.png}
+    \caption{}
+    \label{fig:exemplo}
+\end{figure}
+
