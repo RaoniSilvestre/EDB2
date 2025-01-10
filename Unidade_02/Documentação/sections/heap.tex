@@ -199,3 +199,56 @@ Além disso, no (min)heapsort, não será necessário fazer um .reverse() na lis
 já estarão em ordem crescente devido a propriedade do Min Heap.
 
 \subsection{Comparação de Heapsort}
+
+O heapsort foi feito de acordo com a linguagem utilizada na primeira
+unidade, o rust. Desse modo, foi utilizado o mesmo código da primeira unidade,
+apenas adicionando no código o comando para que ele rode também o heapsort.
+
+Vale ressaltar que os resultados dessa vez foram muito mais expressivos nas listas
+maiores, visto que foi pedida a ordenação de listas com 1 milhão de itens.
+
+Dito isso, os novos resultados mostram que existe pouca diferença entre os algoritmos mais rápidos,
+com exceção do quicksort, que acabou sofrendo mais. O motivo disso é que a sua complexidade no
+pior caso é $O(n^{2})$, e com valores muito grandes, esse fator começa a pesar mais. Comentando sobre o heapsort, percebe-se
+que ele tem um comportamento muito similar ao mergesort, e isso se deve ao fato que ambos são algoritmos estáveis,
+no sentido de que ambos sempre realizam $O(n * log n)$ operações para ordenar um vetor.
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        Tamanho & Heap(Min) & Heap(Max) & Merge(R) & Merge(I) & Quick(R) & Quick(I) \\
+        \hline
+        10.000 & 1.76ms & 1.91ms & 5.17ms & 4.95ms & 1.7ms & 1.18ms \\
+        100.000 & 21.76ms & 22.23ms & 48.76ms & 40.11ms & 53.96ms & 21.28ms \\
+        1.000.000 & 491.96ms & 509.67ms & 475.00ms & 451.86ms & 4.07s & 1.14s \\
+        \hline
+    \end{tabular}
+    \caption{Comparação de algoritmos $O(n * log(n))$}
+\end{table}
+
+Agora, comparando o heapsort com o bubblesort, temos uma situação engraçada, com 1 milhão de itens,
+o bubble sort demorou quase duas horas para realizar a ordenação, enquanto o heapsort demorou meio segundo.
+Para ter noção da discrepância, com alguns cálculos e alguns arredondamentos, chegamos a conclusão 
+de que enquanto o bubblesort ordena um array de um milhão de elementos, o heapsort consegue ordenar cerca de
+13 mil arrays com 1 milhão de elementos. 
+
+Isso demonstra muito evidentemente(foram mais de 3 horas esperando isso rodar) que assintoticamente,
+o algoritmo bubble sort é péssimo.
+
+No mais, o heapsort é uma opção bem sólida, que tem uma performance similar ao mergesort, mas com uma
+maior eficiência de espaço.
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Tamanho & Heap(Min) & Heap(Max) & Bubble(R) & Bubble(I) \\
+        \hline
+        10.000 & 1.76ms & 1.91ms & 345.98ms & 244.47ms  \\
+        100.000 & 21.76ms & 22.23ms & 34.46s & 34.50s  \\
+        1.000.000 & 491.96ms & 509.67ms & 1h44m & 1h51m  \\
+        \hline
+    \end{tabular}
+    \caption{Comparação Heapsort e Bubblesort}
+\end{table}
