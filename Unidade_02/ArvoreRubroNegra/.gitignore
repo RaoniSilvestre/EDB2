@@ -1,0 +1,9 @@
+.build
+.cache
+CMakeFiles
+Arvore_Rubro_Negra
+cmake_install.cmake
+CMakeCache.txt
+compile_commands.json
+Makefile
+.clang-format
