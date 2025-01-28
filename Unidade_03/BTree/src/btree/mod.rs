@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 mod auxiliary;
 mod btree;
@@ -11,7 +11,7 @@ pub struct BTree {
     grau: i32,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq)]
 pub struct Node {
     keys: Vec<Key>,
     children: Vec<Node>,

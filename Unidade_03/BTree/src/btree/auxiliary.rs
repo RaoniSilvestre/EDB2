@@ -8,14 +8,22 @@ use serde::{
 
 use super::{Key, Node};
 
+#[derive(Debug)]
 pub enum InsertionResult {
     Inserted,
     AddToFater(Key, Node),
 }
 
+#[derive(Debug)]
 pub enum SearchResult {
     Find(usize),
     GoDown(usize),
+}
+
+impl Ord for Node {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.keys[0].cmp(&other.keys[0])
+    }
 }
 
 impl Ord for Key {
