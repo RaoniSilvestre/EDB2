@@ -30,7 +30,6 @@ impl Node {
         // Retorna o index que será buscado
         let result = self.search(&k);
 
-
         // Se é folha, acaba a recursão, apenas tenta inserir
         if self.is_leaf {
             return self.try_insert(k);
