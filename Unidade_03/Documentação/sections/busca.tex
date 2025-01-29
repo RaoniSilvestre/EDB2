@@ -1,0 +1,56 @@
+\section{Busca}
+
+O algoritmo de busca por uma chave \( x \) em uma árvore B é semelhante ao utilizado em árvores binárias 
+de busca. No entanto, a principal diferença reside no fato de que, em uma árvore B, cada nó pode conter 
+múltiplas chaves, tornando necessário percorrer todas as chaves presentes em um nó antes de decidir 
+em qual subárvore continuar a busca. 
+
+A implementação em rust ficou da seguinte forma:
+
+\begin{lstlisting}
+    pub fn find(&self, k: Key) -> Option<Key> {
+        let mut curr_node = &self.root;
+        loop {
+            match curr_node.search(&k) {
+                SearchResult::Find(i) => return curr_node.key(i).cloned(),
+                SearchResult::GoDown(i) => match curr_node.child(i) {
+                    None => return None,
+                    Some(next_node) => curr_node = next_node,
+                },
+            }
+        }
+    }
+\end{lstlisting}
+
+\begin{itemize}
+    \item A função busca a chave \( k \) começando pela raiz.
+    \item Cada nó pode ter várias chaves, então search é 
+    usado para decidir se a chave está no nó ou em qual subárvore buscar.
+    \item Se a chave for encontrada, é retornada uma cópia dela.
+    \item Se não for encontrada e não houver mais filhos para explorar, a função retorna None.
+\end{itemize}
+---
+
+Na implementação da função search, temos:
+
+\begin{lstlisting}
+    pub fn search(&self, k: &Key) -> SearchResult {
+        for (i, key) in self.keys.iter().enumerate() {
+            match key.key.cmp(&k.key) {
+                Ordering::Less => {}
+                Ordering::Equal => return SearchResult::Find(i),
+                Ordering::Greater => return SearchResult::GoDown(i),
+            }
+        }
+        SearchResult::GoDown(self.keys.len())
+    }
+\end{lstlisting}
+
+\begin{itemize}
+    \item Retorna $Find(i)$ se a chave \( k \) for encontrada no índice \( i \). 
+    \item Retorna $GoDown(i)$ para indicar que a busca deve continuar no filho \( i \).
+\end{itemize}
+---
+
+Esse método mantém a eficiência da busca na árvore B, garantindo um tempo de execução 
+$O(logn)$, já que a altura da árvore é logarítmica em relação ao número de chaves armazenadas.

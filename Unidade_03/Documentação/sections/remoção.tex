@@ -1,0 +1,43 @@
+\section{Remoção}
+
+A remoção de uma chave \( x \) em uma Árvore B pode ser tratada de diferentes formas, 
+dependendo da posição da chave dentro da árvore. Os principais casos são:
+
+\begin{itemize}
+    \item Se \( x \) está em um nó folha: a chave é simplesmente removida do nó.
+    \item Se \( x \) está em um nó interno: \( x \) é substituída pela chave \( y \), que é 
+    a maior chave do subárvore esquerda (ou, alternativamente, a menor chave da subárvore direita).
+\end{itemize}
+
+No entanto, ao remover uma chave, o número de chaves em um nó pode ficar menor que \( d \), 
+violando as propriedades da Árvore B. Para corrigir essa violação, dois métodos podem ser aplicados:
+
+\begin{itemize}
+    \item **Redistribuição**: as chaves são redistribuídas entre nós irmãos para manter o número 
+    mínimo de chaves em cada nó.
+    \item **Concatenação (ou fusão)**: se a redistribuição não for possível, dois nós são mesclados 
+    em um único nó, reduzindo a altura da árvore, se necessário.
+\end{itemize}
+
+---
+
+\subsection{Redistribuição de Chaves}
+
+Sejam \( P \) e \( Q \) dois nós irmãos adjacentes que, juntos, possuem pelo menos \( 2d \) chaves. 
+Seja \( W \) o nó pai de \( P \) e \( Q \). O processo de redistribuição funciona da seguinte forma:
+
+\begin{itemize}
+    \item Uma chave do pai \( W \) é movida para o nó que ficou com menos chaves.
+    \item Uma chave do nó irmão adjacente é promovida para o pai \( W \) para manter a estrutura balanceada.
+\end{itemize}
+
+Se a redistribuição não for possível (ou seja, se \( P \) e \( Q \) juntos possuem menos que \( 2d \) chaves), então a concatenação é aplicada.
+
+No seguinte fluxograma é possível visualizar essa estrategia:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.2\textwidth]{imagens/_fluxograma.png}
+    \caption{Legenda da imagem}
+    \label{fig:exemplo}
+\end{figure}
