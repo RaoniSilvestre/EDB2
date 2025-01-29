@@ -84,6 +84,8 @@ impl BTree {
         new_root.children.push(root);
         new_root.children.push(new_node);
 
+        new_root.children.sort();
+
         Self {
             grau: new_root.grade,
             root: new_root,

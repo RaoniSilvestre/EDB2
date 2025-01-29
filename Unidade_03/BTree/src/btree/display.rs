@@ -1,29 +1,29 @@
-use std::collections::VecDeque;
 use std::fmt;
 
 use super::{BTree, Key, Node};
 
 impl fmt::Display for BTree {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut queue = VecDeque::new();
-        queue.push_back((&self.root, 0));
-
-        let mut current_level = 0;
-        write!(f, "Nível {}: ", current_level)?;
-
-        while let Some((node, level)) = queue.pop_front() {
-            if level != current_level {
-                current_level = level;
-                writeln!(f)?;
-                write!(f, "Nível {}: \n", current_level)?;
+        fn display_node(node: &Node, f: &mut fmt::Formatter<'_>, level: usize) -> fmt::Result {
+            // Adiciona indentação para mostrar o nível do nó
+            for _ in 0..level {
+                write!(f, "    ")?; // 4 espaços para cada nível
             }
 
-            write!(f, "{} \n", node)?;
+            // Exibe o nó atual
+            writeln!(f, "Nó: {}", node)?;
 
+            // Exibe os filhos do nó recursivamente
             for child in &node.children {
-                queue.push_back((child, level + 1));
+                display_node(child, f, level + 1)?;
             }
+
+            Ok(())
         }
+
+        // Começa com o nó raiz
+        writeln!(f, "Árvore B:")?;
+        display_node(&self.root, f, 0)?;
 
         Ok(())
     }
@@ -36,7 +36,7 @@ impl fmt::Display for Node {
             if i > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{}", key)?;
+            write!(f, "{}", key.key)?;
         }
         write!(f, "]")
     }
