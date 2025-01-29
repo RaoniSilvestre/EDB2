@@ -98,6 +98,10 @@ impl Node {
         self.children.as_slice().get(i)
     }
 
+    pub fn child_mut(&mut self, i: usize) -> Option<&mut Node> {
+        self.children.get_mut(i)
+    }
+
     pub fn is_full(&self) -> bool {
         self.keys.len() == (2 * self.grade - 1) as usize
     }
