@@ -20,6 +20,13 @@ pub enum SearchResult {
     GoDown(usize),
 }
 
+#[derive(Debug)]
+pub enum RemovalResult{
+    RemoveCompleted,
+    LeafRemoveFail(Key),
+    NotLeafRemoveFail(Key, Node)
+}
+
 impl Ord for Node {
     fn cmp(&self, other: &Self) -> Ordering {
         self.keys[0].cmp(&other.keys[0])

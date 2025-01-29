@@ -31,6 +31,10 @@ impl BTree {
             *self = Self::new_root(self.root.clone(), k, new_node);
         }
     }
+    
+    pub fn remove(&mut self, k: Key) {
+        self.root.remove(k); 
+    }
 
     fn new_root(root: Node, k: Key, new_node: Node) -> Self {
         let mut new_root = Node::new(false, root.grade);

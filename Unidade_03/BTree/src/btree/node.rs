@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 
 use super::{
-    auxiliary::{InsertionResult, SearchResult},
+    auxiliary::{InsertionResult, SearchResult, RemovalResult},
     Key, Node,
 };
 
@@ -54,6 +54,49 @@ impl Node {
         InsertionResult::Inserted
     }
 
+    pub fn remove(&mut self, k: Key) -> RemovalResult {
+        let result = self.search(&k);        // q chique bboy
+        match result {
+            SearchResult::Find(i) => {
+                if self.is_leaf {
+                    if self.keys.len() >= (self.grade + 1) as usize {
+                        self.keys.remove(i);
+                        return RemovalResult::RemoveCompleted;
+                    } else { 
+                        return RemovalResult::LeafRemoveFail(k);
+                    } 
+                } else {
+                    let left_len = self.children[i].keys.len();
+                    let right_len = self.children[i + 1].keys.len();
+
+                    if left_len >= (self.grade + 1) as usize {
+                        let max = self.children[i].keys.pop().unwrap();
+                        self.keys[i] = max;
+                        return RemovalResult::RemoveCompleted;
+                    } else if right_len >= (self.grade + 1) as usize {
+                        let min = self.children[i + 1].keys.remove(0);
+                        self.keys[i] = min;
+                        return RemovalResult::RemoveCompleted;
+                    } else {
+                        // Precisa fazer merge
+                        todo!()
+                    }
+                    
+                }
+            },
+            SearchResult::GoDown(i) => {
+                let child = self.children[i].remove(k);
+
+                // Tratar dos retornos do filho
+                match child => {
+                    RemovalResult::RemoveCompleted => {},
+                    RemovalResult::LeafRemoveFail(failed_key) => todo!(),
+                    RemovalResult::NotLeafResultFail(failed_key, new_node) => todo!()
+                }
+            }
+        }
+    }
+
     pub fn try_insert(&mut self, k: Key) -> InsertionResult {
         self.keys.push(k);
         self.keys.sort();
@@ -94,6 +137,10 @@ impl Node {
 
     pub fn child(&self, i: usize) -> Option<&Node> {
         self.children.as_slice().get(i)
+    }
+
+    pub fn child_mut(&mut self, i: usize) -> Option<&mut Node> {
+        self.children.get_mut(i)
     }
 
     pub fn is_full(&self) -> bool {
