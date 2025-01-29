@@ -1,0 +1,87 @@
+\section{Introdução}
+
+As árvores B utilizam a característica de armazenar múltiplas chaves 
+em cada nó para organizar eficientemente os dados e os ponteiros, permitindo 
+que operações como busca, inserção e remoção sejam realizadas de forma rápida. 
+Além disso, sua construção garante que todas as folhas estejam sempre no mesmo nível, 
+assegurando balanceamento e consistência na estrutura.
+
+
+\subsection{Propriedades}
+
+Seja \( d \) um número natural. Uma árvore B de ordem \( d \) é uma árvore ordenada 
+que pode ser vazia ou satisfazer as seguintes condições:
+\begin{itemize}
+    \item \textbf{A raiz}: É uma folha ou possui, no mínimo, dois filhos.
+    \item \textbf{Nós internos}: Cada nó, exceto a raiz e as folhas, possui pelo menos \( d + 1 \) filhos.
+    \item \textbf{Capacidade máxima}: Cada nó pode conter, no máximo, \( 2d + 1 \) filhos.
+    \item \textbf{Nivelamento das folhas}: Todas as folhas estão no mesmo nível, como mencionado anteriormente.
+\end{itemize}
+
+\subsection{Estrutura}
+
+Para a construção da árvore B em Rust, definimos a seguinte estrutura:
+
+\subsubsection{\texttt{BTree}}
+
+A estrutura \texttt{BTree} representa a árvore principal e é definida como:
+
+\begin{lstlisting}
+    pub struct BTree {
+        root: Node,
+        grau: i32,
+    }
+\end{lstlisting}
+
+Os campos de \texttt{BTree} são:
+\begin{itemize}
+    \item \textbf{\texttt{root}}: Representa a raiz da árvore B. É o ponto inicial para 
+    todas as operações, como busca, inserção e remoção.
+    \item \textbf{\texttt{grau}}: Define o grau da árvore B. O grau \( d \) determina a 
+    capacidade mínima e máxima dos nós.
+\end{itemize}
+
+\subsubsection{\texttt{Node}}
+
+A estrutura \texttt{Node} representa os nós da árvore B e é definida como:
+
+\begin{lstlisting}
+    pub struct Node {
+        keys: Vec<Key>,
+        children: Vec<Node>,
+        is_leaf: bool,
+        grade: i32,
+    }
+\end{lstlisting}
+
+Os campos de \texttt{Node} são:
+\begin{itemize}
+    \item \textbf{\texttt{keys}}: Um vetor que armazena as chaves presentes no nó. 
+    As chaves são mantidas ordenadas para facilitar as operações de busca.
+    \item \textbf{\texttt{children}}: Um vetor que contém os nós filhos, representando 
+    a hierarquia da árvore. Para nós folha, este vetor estará vazio.
+    \item \textbf{\texttt{is\_leaf}}: Um campo booleano que indica se o nó é uma folha. 
+    Nós folha não possuem filhos.
+    \item \textbf{\texttt{grade}}: Representa o grau do nó, que pode ser usado para verificar 
+    o número atual de chaves ou filhos presentes.
+\end{itemize}
+
+\subsubsection{\texttt{Key}}
+
+A estrutura \texttt{Key} define as informações armazenadas em cada nó e é definida como:
+
+\begin{lstlisting}
+    pub struct Key {
+        key: i32,
+        nome: String,
+        quantidade: usize,
+    }
+\end{lstlisting}
+
+Os campos de \texttt{Key} são:
+\begin{itemize}
+    \item \textbf{\texttt{key}}: A chave propriamente dita, utilizada para ordenação e busca na árvore.
+    \item \textbf{\texttt{nome}}: Um identificador associado à chave, que pode armazenar 
+    informações descritivas ou metadados.
+    \item \textbf{\texttt{quantidade}}: Representa a quantidade associada à chave.
+\end{itemize}

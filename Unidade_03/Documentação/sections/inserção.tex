@@ -1,0 +1,118 @@
+\section{Inserção}
+
+O processo de inserção em uma Árvore B segue os seguintes passos principais:
+
+\begin{enumerate}
+    \item **Localizar o local correto para inserir a chave:** utiliza a mesma lógica do método \texttt{search}.
+    \item **Inserir e balancear a árvore:** verifica se o nó é folha ou interno:
+    \begin{itemize}
+        \item Se for folha, a chave é inserida diretamente.
+        \item Se o nó estiver cheio, ele é dividido usando a função \texttt{split}, e a chave do meio sobe para o nó pai.
+        \item Caso a raiz precise ser dividida, cria-se uma nova raiz, aumentando a altura da árvore.
+    \end{itemize}
+\end{enumerate}
+
+---
+
+\subsection{Método \texttt{insert} na \texttt{BTree}}
+
+O método \texttt{insert} na \texttt{BTree} realiza a inserção na raiz da árvore, verificando se há necessidade de criar uma nova raiz.
+
+\begin{lstlisting}
+pub fn insert(&mut self, k: Key) {
+    let insertion = self.root.insert(k);
+
+    if let InsertionResult::AddToFater(k, new_node) = insertion {
+        *self = Self::new_root(self.root.clone(), k, new_node);
+    }
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item Primeiro, chama o método \texttt{insert} no nó raiz (\texttt{self.root}).
+    \item Caso a raiz seja dividida (\texttt{AddToFater}), uma nova raiz é criada para manter a árvore balanceada.
+\end{itemize}
+
+Se a altura da árvore precisar aumentar, o método \texttt{new\_root} cria uma nova raiz com dois filhos.
+
+---
+
+\subsection{Método \texttt{insert} no \texttt{Node}}
+
+O método \texttt{insert} no \texttt{Node} realiza a inserção recursiva nos nós, seguindo as etapas abaixo:
+
+\begin{lstlisting}
+pub fn insert(&mut self, k: Key) -> InsertionResult {
+    let result = self.search(&k);
+
+    if self.is_leaf {
+        return self.try_insert(k);
+    }
+
+    if let SearchResult::GoDown(i) = result {
+        let child = self.children[i].insert(k);
+
+        if let InsertionResult::AddToFater(middle_key, new_node) = child {
+            self.children.insert(i + 1, new_node);
+            self.children.sort();
+            self.keys.insert(i, middle_key);
+            self.keys.sort();
+
+            if self.is_full() {
+                return self.split_node();
+            }
+        }
+    }
+
+    InsertionResult::Inserted
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item Busca o local correto para a inserção da chave usando o método \texttt{search}.
+    \item Se o nó for folha, insere diretamente utilizando o método \texttt{try\_insert}.
+    \item Caso contrário, chama \texttt{insert} recursivamente no nó filho correspondente.
+    \item Após a inserção no filho:
+    \begin{itemize}
+        \item Caso o nó filho seja dividido (\texttt{AddToFater}), insere o novo nó filho e a chave do meio no nó atual.
+        \item Se o nó atual estiver cheio, chama \texttt{split\_node} para dividi-lo.
+    \end{itemize}
+\end{itemize}
+
+---
+
+\subsection{Função \texttt{split\_node}}
+
+O método \texttt{split\_node} realiza a divisão de um nó quando ele está cheio, movendo a chave do meio para o nó pai. A implementação segue:
+
+\begin{lstlisting}
+pub fn split_node(&mut self) -> InsertionResult {
+    let t = self.grade as usize;
+    let mid = t;
+
+    let mut right_node = Node::new(self.is_leaf, self.grade);
+
+    right_node.keys = self.keys.drain(mid + 1..).collect();
+
+    if !self.is_leaf {
+        right_node.children = self.children.drain(mid + 1..).collect();
+    }
+
+    let middle_key = self.keys.remove(mid);
+
+    InsertionResult::AddToFater(middle_key, right_node)
+}
+\end{lstlisting}
+
+O método segue as etapas:
+
+\begin{itemize}
+    \item Define \texttt{mid} como o índice central do nó.
+    \item Cria um novo nó à direita (\texttt{right\_node}).
+    \item Move as chaves à direita do índice \texttt{mid} para \texttt{right\_node}.
+    \item Se o nó não for folha, também move os filhos correspondentes para \texttt{right\_node}.
+    \item Remove a chave do meio, que será enviada para o nó pai.
+    \item Retorna \texttt{AddToFater}, indicando a necessidade de inserir a chave do meio no pai.
+\end{itemize}
+
+--- 
